@@ -25,8 +25,9 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             padding: 20px;
+            padding-top: 100px;
         }
         
         .language-switcher {
@@ -92,7 +93,7 @@
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            max-width: 900px;
+            max-width: 1200px;
             width: 100%;
         }
         
@@ -114,10 +115,10 @@
             margin-bottom: 20px;
         }
         
-        .grid {
+        .main-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
             margin-bottom: 30px;
         }
         
@@ -149,7 +150,8 @@
             color: var(--primary-color);
         }
         
-        input[type="number"] {
+        input[type="number"],
+        input[type="text"] {
             width: 100%;
             padding: 12px;
             border: 2px solid var(--border-color);
@@ -172,7 +174,93 @@
             gap: 12px;
         }
         
-        button {
+        .products-list {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .product-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--accent-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-name {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .product-cost {
+            font-size: 0.9em;
+            color: var(--muted);
+        }
+        
+        .delete-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+        
+        .delete-btn:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+        
+        .add-product-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .add-btn {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #c9a55c 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+        
+        button.calc-btn {
             width: 100%;
             padding: 16px;
             background: linear-gradient(135deg, var(--primary-color) 0%, #1a252f 100%);
@@ -187,12 +275,12 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
-        button:hover {
+        button.calc-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
         
-        button:active {
+        button.calc-btn:active {
             transform: translateY(-1px);
         }
         
@@ -204,14 +292,14 @@
             border-radius: 10px;
             display: none;
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            animation: slideIn 0.4s ease;
+            animation: slideInDown 0.4s ease;
         }
         
         .results.show {
             display: block;
         }
         
-        @keyframes slideIn {
+        @keyframes slideInDown {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -222,35 +310,51 @@
             }
         }
         
-        .results p {
-            margin: 14px 0;
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.08em;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
         
-        .results p:last-child {
-            border-bottom: none;
+        .result-card {
+            background: rgba(255,255,255,0.1);
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
         }
         
-        .final-price {
-            font-size: 1.6em !important;
-            font-weight: bold;
-            color: var(--accent-color) !important;
-            border-top: 2px solid var(--accent-color) !important;
-            padding-top: 18px !important;
-            margin-top: 18px !important;
-        }
-        
-        .result-label {
-            font-weight: 500;
+        .result-card h4 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-size: 0.95em;
         }
         
         .result-value {
-            color: var(--accent-color);
+            font-size: 1.5em;
             font-weight: bold;
+            color: white;
+        }
+        
+        .final-price {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--accent-color) 0%, #c9a55c 100%);
+            color: var(--primary-color);
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .final-price h3 {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .final-price-value {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: var(--primary-color);
         }
         
         .error-message {
@@ -262,17 +366,18 @@
             display: none;
             animation: slideIn 0.3s ease;
         }
+
+        .muted {
+            color: #999;
+        }
         
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .sub-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .container {
                 padding: 20px;
             }
@@ -297,10 +402,14 @@
                 padding: 6px 12px;
                 font-size: 0.9em;
             }
-        }
 
-        .hidden {
-            display: none;
+            .add-product-group {
+                grid-template-columns: 1fr;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -318,29 +427,14 @@
 
 <div class="container">
     <div class="header-container">
-        <h2 id="title">آلة حساب الأسعار</h2>
-        <p class="subtitle" id="subtitle">احسب السعر النهائي للبيع بناءً على تكاليفك</p>
+        <h2 id="title">آلة حساب الأسعار - 10 قطع</h2>
+        <p class="subtitle" id="subtitle">أضف حتى 10 منتجات مختلفة وسيتم توزيع النفقات عليها</p>
     </div>
 
-    <div class="grid">
+    <div class="main-grid">
+        <!-- Settings Section -->
         <div class="section">
-            <h3 id="sec1">مواصفات المنتج</h3>
-            <div class="form-group">
-                <label for="baseCost" id="label1">سعر القطعة الواحدة</label>
-                <input type="number" id="baseCost" placeholder="مثال: 500" step="0.01">
-            </div>
-            <div class="form-group">
-                <label for="units" id="label2">عدد القطع المتوقعة للبيع</label>
-                <input type="number" id="units" value="50" min="1">
-            </div>
-            <div class="form-group">
-                <label for="shipping" id="label3">تكاليف الشحن لكل منتج</label>
-                <input type="number" id="shipping" value="6.56" step="0.01">
-            </div>
-        </div>
-
-        <div class="section">
-            <h3 id="sec2">النفقات والرسوم</h3>
+            <h3 id="sec2">النفقات العامة</h3>
             <div class="form-group">
                 <label for="fixedCosts" id="label4">إجمالي النفقات الثابتة</label>
                 <input type="number" id="fixedCosts" value="2112" step="1">
@@ -364,76 +458,86 @@
                 <input type="number" id="profitMargin" value="6.0" step="0.1">
             </div>
         </div>
+
+        <!-- Products Section -->
+        <div class="section">
+            <h3 id="sec1">المنتجات (10 قطع كحد أقصى)</h3>
+            
+            <div class="add-product-group">
+                <input type="text" id="productName" placeholder="اسم المنتج" id="label1">
+                <input type="number" id="productCost" placeholder="سعر القطعة" step="0.01" id="label2">
+                <button class="add-btn" onclick="addProduct()" id="addBtn">إضافة</button>
+            </div>
+
+            <div class="products-list" id="productsList">
+                <p class="muted" id="noProducts">لم تضف أي منتجات بعد</p>
+            </div>
+        </div>
     </div>
 
-    <button onclick="calculatePrice()" id="calcBtn">احسب السعر النهائي</button>
+    <button class="calc-btn" onclick="calculatePrice()" id="calcBtn">احسب الأسعار النهائية</button>
 
     <div class="error-message" id="errorMsg"></div>
 
     <div class="results" id="resultsArea">
-        <p>
-            <span class="result-label" id="res1">سعر القطعة + الشحن:</span>
-            <span class="result-value" id="resBase">0</span>
-        </p>
-        <p>
-            <span class="result-label" id="res2">النفقات الموزعة لكل قطعة:</span>
-            <span class="result-value" id="resOverhead">0</span>
-        </p>
-        <p>
-            <span class="result-label" id="res3">إجمالي تكلفة القطعة:</span>
-            <span class="result-value" id="resTotalCost">0</span>
-        </p>
-        <p class="final-price">
-            <span class="result-label" id="res4">السعر النهائي للبيع:</span>
-            <span class="result-value" id="resFinalPrice">0</span>
-        </p>
+        <h3 id="resultsTitle">نتائج الحساب</h3>
+        <div class="results-grid" id="resultsGrid"></div>
     </div>
 </div>
 
 <script>
     let currentLanguage = 'ar';
     let currentCurrency = 'SAR';
+    let products = [];
 
     const translations = {
         ar: {
-            title: 'آلة حساب الأسعار',
-            subtitle: 'احسب السعر النهائي للبيع بناءً على تكاليفك',
-            sec1: 'مواصفات المنتج',
-            sec2: 'النفقات والرسوم',
-            label1: 'سعر القطعة الواحدة',
-            label2: 'عدد القطع المتوقعة للبيع',
+            title: 'آلة حساب الأسعار - 10 قطع',
+            subtitle: 'أضف حتى 10 منتجات مختلفة وسيتم توزيع النفقات عليها',
+            sec1: 'المنتجات (10 قطع كحد أقصى)',
+            sec2: 'النفقات العامة',
+            label1: 'اسم المنتج',
+            label2: 'سعر القطعة',
             label3: 'تكاليف الشحن لكل منتج',
             label4: 'إجمالي النفقات الثابتة',
             label5: 'إجمالي النفقات الشهرية',
             label6: 'رسوم الدفع (%)',
             label7: 'رسوم المعالجة (%)',
             label8: 'هامش الربح المستهدف (%)',
-            calcBtn: 'احسب السعر النهائي',
-            res1: 'سعر القطعة + الشحن:',
-            res2: 'النفقات الموزعة لكل قطعة:',
-            res3: 'إجمالي تكلفة القطعة:',
-            res4: 'السعر النهائي للبيع:',
-            error: 'خطأ: مجموع النسب المئوية لا يمكن أن يكون 100% أو أكثر'
+            addBtn: 'إضافة',
+            calcBtn: 'احسب الأسعار النهائية',
+            noProducts: 'لم تضف أي منتجات بعد',
+            resultsTitle: 'نتائج الحساب',
+            costLabel: 'السعر الأساسي:',
+            overheadLabel: 'النفقات الموزعة:',
+            finalLabel: 'السعر النهائي:',
+            error: 'خطأ: مجموع النسب المئوية لا يمكن أن يكون 100% أو أكثر',
+            errorNoProducts: 'يجب إضافة منتج واحد على الأقل',
+            maxProducts: 'لا يمكن إضافة أكثر من 10 منتجات'
         },
         en: {
-            title: 'LeMore Pricing Calculator',
-            subtitle: 'Calculate your final selling price based on your costs',
-            sec1: 'Product Specifics',
+            title: 'LeMore Pricing Calculator - 10 Products',
+            subtitle: 'Add up to 10 different products and costs will be distributed evenly',
+            sec1: 'Products (Max 10 items)',
             sec2: 'Overhead & Settings',
-            label1: 'Base Cost per Piece',
-            label2: 'Expected Sales Volume (Units)',
+            label1: 'Product Name',
+            label2: 'Base Cost per Piece',
             label3: 'Shipping per Product',
             label4: 'Total Fixed Costs',
             label5: 'Total Monthly Costs',
             label6: 'Payment Fee (%)',
             label7: 'Processing Fee (%)',
             label8: 'Target Profit (%)',
-            calcBtn: 'Calculate Final Price',
-            res1: 'Base Cost + Shipping:',
-            res2: 'Apportioned Overhead (per unit):',
-            res3: 'Total Unit Cost (Break-even):',
-            res4: 'Final Selling Price:',
-            error: 'Error: The sum of percentage fees and profit cannot be 100% or greater'
+            addBtn: 'Add',
+            calcBtn: 'Calculate Final Prices',
+            noProducts: 'No products added yet',
+            resultsTitle: 'Calculation Results',
+            costLabel: 'Base Price:',
+            overheadLabel: 'Distributed Overhead:',
+            finalLabel: 'Final Price:',
+            error: 'Error: The sum of percentage fees and profit cannot be 100% or greater',
+            errorNoProducts: 'You must add at least one product',
+            maxProducts: 'Maximum 10 products allowed'
         }
     };
 
@@ -442,28 +546,24 @@
         document.documentElement.lang = lang;
         document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
         
-        // Update UI text
         document.getElementById('title').textContent = translations[lang].title;
         document.getElementById('subtitle').textContent = translations[lang].subtitle;
         document.getElementById('sec1').textContent = translations[lang].sec1;
         document.getElementById('sec2').textContent = translations[lang].sec2;
-        document.getElementById('label1').textContent = translations[lang].label1;
-        document.getElementById('label2').textContent = translations[lang].label2;
-        document.getElementById('label3').textContent = translations[lang].label3;
+        document.getElementById('productName').placeholder = translations[lang].label1;
+        document.getElementById('productCost').placeholder = translations[lang].label2;
         document.getElementById('label4').textContent = translations[lang].label4;
         document.getElementById('label5').textContent = translations[lang].label5;
         document.getElementById('label6').textContent = translations[lang].label6;
         document.getElementById('label7').textContent = translations[lang].label7;
         document.getElementById('label8').textContent = translations[lang].label8;
+        document.getElementById('addBtn').textContent = translations[lang].addBtn;
         document.getElementById('calcBtn').textContent = translations[lang].calcBtn;
-        document.getElementById('res1').textContent = translations[lang].res1;
-        document.getElementById('res2').textContent = translations[lang].res2;
-        document.getElementById('res3').textContent = translations[lang].res3;
-        document.getElementById('res4').textContent = translations[lang].res4;
         
-        // Update language buttons
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
         event.target.classList.add('active');
+        
+        updateProductsList();
     }
 
     function switchCurrency(currency) {
@@ -480,44 +580,135 @@
         }
     }
 
+    function addProduct() {
+        const name = document.getElementById('productName').value.trim();
+        const cost = parseFloat(document.getElementById('productCost').value) || 0;
+
+        if (!name) {
+            showError(translations[currentLanguage].errorNoProducts);
+            return;
+        }
+
+        if (products.length >= 10) {
+            showError(translations[currentLanguage].maxProducts);
+            return;
+        }
+
+        products.push({ id: Date.now(), name, cost });
+        document.getElementById('productName').value = '';
+        document.getElementById('productCost').value = '';
+        updateProductsList();
+    }
+
+    function deleteProduct(id) {
+        products = products.filter(p => p.id !== id);
+        updateProductsList();
+    }
+
+    function updateProductsList() {
+        const list = document.getElementById('productsList');
+        
+        if (products.length === 0) {
+            list.innerHTML = `<p class="muted">${translations[currentLanguage].noProducts}</p>`;
+            return;
+        }
+
+        list.innerHTML = products.map(product => `
+            <div class="product-item">
+                <div class="product-info">
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-cost">${formatCurrency(product.cost)}</div>
+                </div>
+                <button class="delete-btn" onclick="deleteProduct(${product.id})">حذف</button>
+            </div>
+        `).join('');
+    }
+
+    function showError(message) {
+        const errorMsg = document.getElementById('errorMsg');
+        errorMsg.textContent = message;
+        errorMsg.style.display = 'block';
+    }
+
     function calculatePrice() {
-        const baseCost = parseFloat(document.getElementById('baseCost').value) || 0;
-        const units = parseFloat(document.getElementById('units').value) || 1;
-        const shipping = parseFloat(document.getElementById('shipping').value) || 0;
+        const errorMsg = document.getElementById('errorMsg');
+        errorMsg.style.display = 'none';
+
+        if (products.length === 0) {
+            showError(translations[currentLanguage].errorNoProducts);
+            return;
+        }
+
         const fixedCosts = parseFloat(document.getElementById('fixedCosts').value) || 0;
         const monthlyCosts = parseFloat(document.getElementById('monthlyCosts').value) || 0;
         const paymentFee = parseFloat(document.getElementById('paymentFee').value) || 0;
         const processingFee = parseFloat(document.getElementById('processingFee').value) || 0;
         const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
 
-        const errorMsg = document.getElementById('errorMsg');
         const totalPercentageDeduction = (paymentFee + processingFee + profitMargin) / 100;
 
         if (totalPercentageDeduction >= 1) {
-            errorMsg.textContent = translations[currentLanguage].error;
-            errorMsg.style.display = 'block';
-            document.getElementById('resultsArea').classList.remove('show');
+            showError(translations[currentLanguage].error);
             return;
         }
 
-        errorMsg.style.display = 'none';
+        // Distribute overhead equally among all products
+        const totalOverhead = fixedCosts + monthlyCosts;
+        const overheadPerProduct = totalOverhead / products.length;
 
-        const overheadPerUnit = (fixedCosts + monthlyCosts) / units;
-        const totalUnitCost = baseCost + shipping + overheadPerUnit;
-        const finalPrice = totalUnitCost / (1 - totalPercentageDeduction);
+        // Calculate final prices
+        const results = products.map(product => {
+            const baseCost = product.cost;
+            const totalUnitCost = baseCost + overheadPerProduct;
+            const finalPrice = totalUnitCost / (1 - totalPercentageDeduction);
+            
+            return {
+                name: product.name,
+                baseCost,
+                overhead: overheadPerProduct,
+                totalCost: totalUnitCost,
+                finalPrice
+            };
+        });
 
-        document.getElementById('resBase').textContent = formatCurrency(baseCost + shipping);
-        document.getElementById('resOverhead').textContent = formatCurrency(overheadPerUnit);
-        document.getElementById('resTotalCost').textContent = formatCurrency(totalUnitCost);
-        document.getElementById('resFinalPrice').textContent = formatCurrency(finalPrice);
+        displayResults(results);
+    }
 
+    function displayResults(results) {
+        const grid = document.getElementById('resultsGrid');
+        const t = translations[currentLanguage];
+
+        const resultsHTML = results.map(result => `
+            <div class="result-card">
+                <h4>${result.name}</h4>
+                <p><small>${t.costLabel}</small><br><strong>${formatCurrency(result.baseCost)}</strong></p>
+                <p><small>${t.overheadLabel}</small><br><strong>${formatCurrency(result.overhead)}</strong></p>
+            </div>
+        `).join('') + `
+            <div class="final-price">
+                <h3>${t.resultsTitle}</h3>
+                ${results.map(result => `
+                    <div style="margin: 10px 0;">
+                        <strong>${result.name}:</strong> <span class="final-price-value">${formatCurrency(result.finalPrice)}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+
+        grid.innerHTML = resultsHTML;
         document.getElementById('resultsArea').classList.add('show');
     }
 
-    // Allow Enter key to calculate
-    document.addEventListener('keypress', function(event) {
+    // Allow Enter key to add product
+    document.getElementById('productCost').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
-            calculatePrice();
+            addProduct();
+        }
+    });
+
+    document.getElementById('productName').addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            addProduct();
         }
     });
 </script>
