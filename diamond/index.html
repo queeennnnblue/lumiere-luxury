@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوميير | متجر الماس المخبري الفاخر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>لوميير</h1>
+                    <p>Lumière</p>
+                </div>
+                <nav class="nav">
+                    <a href="#collection" class="nav-link" data-i18n="nav_collection">التشكيلة</a>
+                    <a href="#why" class="nav-link" data-i18n="nav_why">لماذا نحن</a>
+                    <a href="#custom" class="nav-link" data-i18n="nav_custom">صمّمي قطعتك</a>
+                    <button class="lang-toggle" onclick="toggleLanguage()">
+                        <span id="lang-text">English</span>
+                    </button>
+                </nav>
+                <a href="admin.html" class="admin-link" style="position: fixed; bottom: 10px; left: 10px; font-size: 0.7rem; opacity: 0.3;">👑</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h2 class="hero-title" data-i18n="hero_title">ألماس الحلم، بسعر الحقيقة</h2>
+                <p class="hero-subtitle" data-i18n="hero_subtitle">مجوهرات الماس المخبري الفاخر • شهادة IGI معتمدة • توفير يصل إلى 70%</p>
+                <a href="#collection" class="btn btn-primary" data-i18n="btn_discover">اكتشفي التشكيلة</a>
+            </div>
+            <div class="hero-image">
+                <img src="assets/model-ring.jpg" alt="صورة مودل" class="hero-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-item">
+                    <img src="assets/model-neck.jpg" alt="قلادة" class="about-img">
+                </div>
+                <div class="about-text">
+                    <h3 data-i18n="about_title">عن الماس المخبري</h3>
+                    <p data-i18n="about_desc">الماس المخبري له نفس التركيب الكيميائي للماس الطبيعي، لكنه يتكون في المختبر بدلاً من باطن الأرض. النتيجة: ماس أنقى، أكبر، وأقل سعراً بثلث السعر. بدون تعدين ضار، بدون وسطاء، بدون هوامش علامات تجارية كبرى.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collection Section -->
+    <section class="collection" id="collection">
+        <div class="container">
+            <h2 class="section-title" data-i18n="collection_title">التشكيلة الحصرية</h2>
+            
+            <!-- Filters -->
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterProducts('all')" data-i18n="filter_all">الكل</button>
+                <button class="filter-btn" onclick="filterProducts('ring')" data-i18n="filter_rings">خواتم</button>
+                <button class="filter-btn" onclick="filterProducts('necklace')" data-i18n="filter_necklaces">قلائد</button>
+                <button class="filter-btn" onclick="filterProducts('earrings')" data-i18n="filter_earrings">أقراط</button>
+                <button class="filter-btn" onclick="filterProducts('bracelet')" data-i18n="filter_bracelets">أساور</button>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Section -->
+    <section class="why" id="why">
+        <div class="container">
+            <h2 class="section-title" data-i18n="why_title">لماذا تنتقلين إلينا؟</h2>
+            
+            <div class="why-content">
+                <div class="why-item">
+                    <h3 data-i18n="why_1_title">ماس أفضل، سعر أقل</h3>
+                    <p data-i18n="why_1_text">الماس المخبري متطابق كيميائياً مع الطبيعي، لكنه يتكون في بيئة مراقبة. تحصلين على ماس أنقى، خالٍ من الشوائب، بنصف ثمن الماس الطبيعي. بلا تعدين ضار، بلا استخراج من باطن الأرض.</p>
+                </div>
+                <div class="why-item">
+                    <h3 data-i18n="why_2_title">سعر مباشر بلا وسطاء</h3>
+                    <p data-i18n="why_2_text">نشتري مباشرة من أفضل الموردين العالميين، ونبيع مباشرة إليكِ. بلا هوامش علامات تجارية كبرى، بلا تسييج أسعار، بلا تضخيم اصطناعي. توفير�� يصل إلى 70% مقارنة بمتاجر المجوهرات التقليدية.</p>
+                </div>
+                <div class="why-item">
+                    <h3 data-i18n="why_3_title">تخصيص + شهادة معتمدة</h3>
+                    <p data-i18n="why_3_text">كل قطعة تأتي مع شهادة IGI معتمدة دولياً، تثبت الخصائص والقيراط والنقاء. ولم تجدي ما يناسبكِ؟ نصمّمه لكِ. قطعتك الفريدة التي تشبهك تماماً.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Design Section -->
+    <section class="custom" id="custom">
+        <div class="container">
+            <h2 class="section-title" data-i18n="custom_title">صمّمي قطعتك الخاصة</h2>
+            <p class="custom-subtitle" data-i18n="custom_subtitle">لم تجدي ما يناسبكِ في التشكيلة؟ نصمّمه لكِ تماماً كما تتخيلينه</p>
+
+            <form class="custom-form" id="customForm">
+                <!-- Metal Type -->
+                <div class="form-group">
+                    <label data-i18n="custom_metal">نوع المعدن</label>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="metal" value="18k-gold" required>
+                            <span data-i18n="metal_18k">ذهب عيار 18</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="metal" value="14k-gold">
+                            <span data-i18n="metal_14k">ذهب عيار 14 (الأفضل قيمة)</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="metal" value="silver">
+                            <span data-i18n="metal_silver">فضة</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="form-group">
+                    <label data-i18n="custom_color">اللون</label>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="color" value="white" required>
+                            <span data-i18n="color_white">فضي</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="color" value="yellow">
+                            <span data-i18n="color_yellow">ذهبي</span>
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="color" value="rose">
+                            <span data-i18n="color_rose">روز قولد</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Diamond Cut -->
+                <div class="form-group">
+                    <label data-i18n="custom_cut">قصة الألماس</label>
+                    <div class="cut-grid">
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="round" required>
+                            <span data-i18n="cut_round">Round</span>
+                        </label>
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="oval">
+                            <span data-i18n="cut_oval">Oval</span>
+                        </label>
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="pear">
+                            <span data-i18n="cut_pear">Pear</span>
+                        </label>
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="marquise">
+                            <span data-i18n="cut_marquise">Marquise</span>
+                        </label>
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="emerald">
+                            <span data-i18n="cut_emerald">Emerald</span>
+                        </label>
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="cushion">
+                            <span data-i18n="cut_cushion">Cushion</span>
+                        </label>
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="princess">
+                            <span data-i18n="cut_princess">Princess</span>
+                        </label>
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="heart">
+                            <span data-i18n="cut_heart">Heart</span>
+                        </label>
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="radiant">
+                            <span data-i18n="cut_radiant">Radiant</span>
+                        </label>
+                        <label class="cut-option">
+                            <input type="radio" name="cut" value="asscher">
+                            <span data-i18n="cut_asscher">Asscher</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Additional Details -->
+                <div class="form-group">
+                    <label data-i18n="custom_details">ملاحظات إضافية (اختياري)</label>
+                    <textarea name="details" placeholder="مثال: حجر مركزي 2 قيراط، نقش اسم، علبة هدية..." class="custom-textarea"></textarea>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label data-i18n="custom_phone">رقم الجوال *</label>
+                    <input type="tel" name="phone" required placeholder="05XXXXXXXXX" pattern="[0-9\+\s\-\(\)]*" class="custom-input">
+                </div>
+
+                <button type="submit" class="btn btn-primary" data-i18n="btn_send">إرسال الطلب</button>
+            </form>
+
+            <div id="customSuccess" class="custom-success" style="display: none;">
+                <p data-i18n="custom_success">سيتم التواصل معكِ خلال 48 ساعة بالسعر النهائي</p>
+                <div class="quote" data-i18n="quote">كما يحتاج الفحم إلى زمنٍ وضغطٍ ليصير ماسة،<br>تستحق قطعتكِ الفريدة لحظةً من الصبر لتولد كاملة.</div>
+                <button class="btn btn-success" id="whatsappBtn" data-i18n="btn_whatsapp">إرسال عبر واتساب</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>لوميير</h3>
+                    <p data-i18n="footer_desc">كل قطعة بشهادة IGI معتمدة • شحن آمن داخل المملكة</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-body" id="modalBody">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script>
+        let currentLang = 'ar';
+        let filteredCategory = 'all';
+        let lastCustomRequest = null;
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.querySelector('.lang-toggle span').textContent = currentLang === 'ar' ? 'English' : 'العربية';
+            updateTranslations();
+            renderProducts();
+        }
+
+        function updateTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const text = translations[currentLang][key] || key;
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = text;
+                } else {
+                    el.textContent = text;
+                }
+            });
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const toRender = filteredCategory === 'all' 
+                ? products 
+                : products.filter(p => p.category === filteredCategory);
+            
+            grid.innerHTML = toRender.map(product => `
+                <div class="product-card" onclick="openProductModal(${product.id})">
+                    <div class="product-image">
+                        ${product.img ? `<img src="${product.img}" alt="${product.name[currentLang]}">` : `<div class="placeholder">${product.name[currentLang].charAt(0)}</div>`}
+                    </div>
+                    <h3>${product.name[currentLang]}</h3>
+                    <p class="product-price" data-i18n="from">يبدأ من</p>
+                    <p class="price">${Math.min(product.priceStarsGem || Infinity, product.priceProvence || Infinity).toFixed(0)} ر.س</p>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(category) {
+            filteredCategory = category;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts();
+        }
+
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            trackProductView(productId);
+
+            const prices = calculatePrices(product);
+            const modal = document.getElementById('productModal');
+            const body = document.getElementById('modalBody');
+
+            const marketPrice = (product.carats || 1) * 7000;
+            const savings = ((marketPrice - prices.cash) / marketPrice * 100).toFixed(0);
+
+            body.innerHTML = `
+                <div class="product-detail">
+                    <div class="detail-image">
+                        ${product.img ? `<img src="${product.img}" alt="${product.name[currentLang]}">` : `<div class="placeholder" style="height: 400px;">${product.name[currentLang].charAt(0)}</div>`}
+                    </div>
+                    <div class="detail-info">
+                        <h2>${product.name[currentLang]}</h2>
+                        <p class="detail-desc">${product.desc[currentLang]}</p>
+                        
+                        <div class="specs">
+                            <div class="spec"><strong>${translations[currentLang].carat || 'القيراط'}:</strong> ${product.carats} ct</div>
+                            <div class="spec"><strong>${translations[currentLang].cut || 'القصة'}:</strong> ${product.cut}</div>
+                            <div class="spec"><strong>${translations[currentLang].color || 'اللون'}:</strong> ${product.color[currentLang]}</div>
+                        </div>
+
+                        <div class="prices-container">
+                            <div class="price-option price-cash">
+                                <strong>${translations[currentLang].cash_payment || 'كاش / تحويل بنكي'}</strong>
+                                <div class="price">${prices.cash.toFixed(0)} ر.س</div>
+                            </div>
+                            <div class="price-option price-apple">
+                                <strong>Apple Pay</strong>
+                                <div class="price">${prices.apple.toFixed(0)} ر.س</div>
+                            </div>
+                            <div class="price-option price-tabby">
+                                <strong>تابي / تمارا</strong>
+                                <div class="price">${prices.tabby.toFixed(0)} ر.س</div>
+                            </div>
+                        </div>
+
+                        <div class="market-comparison">
+                            <p><strong>${translations[currentLang].market_compare || 'مقارنة السوق'}:</strong></p>
+                            <p>سعرنا أوفر بـ <strong>${savings}%</strong> من متاجر المجوهرات التقليدية</p>
+                        </div>
+
+                        <a href="https://wa.me/966510082828?text=أنا مهتمة بـ ${encodeURIComponent(product.name[currentLang])}" class="btn btn-success" target="_blank">
+                            ${translations[currentLang].contact_whatsapp || 'تواصلي عبر واتساب'}
+                        </a>
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        function calculatePrices(product) {
+            const basePrice = Math.min(product.priceStarsGem || Infinity, product.priceProvence || Infinity);
+            const inRials = basePrice * settings.exchangeRate;
+            const withProcessing = inRials * (1 + settings.processingFee / 100);
+            const withOverhead = withProcessing + (settings.overheadFixed + settings.overheadMonthly) / settings.productCount;
+            const beforePayment = withOverhead * (1 + settings.profitMargin / 100) + settings.customShipping;
+
+            return {
+                cash: beforePayment + (beforePayment * settings.cashFee / 100 + 1) * (1 + 0.15),
+                apple: beforePayment + (beforePayment * settings.appleFee / 100 + 1) * (1 + 0.15),
+                tabby: beforePayment + (beforePayment * settings.tabbyFee / 100 + 1) * (1 + 0.15)
+            };
+        }
+
+        // Custom Form
+        document.getElementById('customForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            lastCustomRequest = {
+                metal: formData.get('metal'),
+                color: formData.get('color'),
+                cut: formData.get('cut'),
+                details: formData.get('details'),
+                phone: formData.get('phone'),
+                date: new Date().toLocaleString('ar-SA')
+            };
+
+            trackCustomRequest(lastCustomRequest);
+            
+            document.getElementById('customForm').style.display = 'none';
+            document.getElementById('customSuccess').style.display = 'block';
+
+            const msg = `✦ طلب تصميم جديد ✦\nنوع المعدن: ${lastCustomRequest.metal}\nاللون: ${lastCustomRequest.color}\nقصة الألماس: ${lastCustomRequest.cut}\nملاحظات: ${lastCustomRequest.details || 'لا توجد'}\nرقم الجوال: ${lastCustomRequest.phone}`;
+            document.getElementById('whatsappBtn').href = `https://wa.me/966510082828?text=${encodeURIComponent(msg)}`;
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Initialize
+        updateTranslations();
+        renderProducts();
+    </script>
+</body>
+</html>
