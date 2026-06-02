@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMIÈRE — لوميير</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="grain"></div>
+
+    <header class="topbar">
+        <div class="topbar-inner">
+            <div class="logo">
+                <div class="mark">LUMIÈRE<span>.</span></div>
+                <div class="tag">Luxury Designs</div>
+            </div>
+            <nav class="nav">
+                <a href="#home">الرئيسية</a>
+                <a href="#products">المنتجات</a>
+                <a href="#why-us">لماذا نحن</a>
+                <a href="#custom">تصميم خاص</a>
+                <button class="lang-btn">EN</button>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <div class="kick">مجموعة حصرية</div>
+                <h1 class="serif">تألق بأناقة لا مثيل لها</h1>
+                <p>اكتشف الفخامة في كل تفصيل. تصاميم فريدة صُنعت خصيصاً لتناسب ذوقك الرفيع وتضفي لمسة من السحر على إطلالتك.</p>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="#products" class="btn btn-primary">تصفح المنتجات</a>
+                    <a href="#custom" class="btn btn-ghost">اطلب تصميمك</a>
+                </div>
+            </div>
+            <div class="hero-img">
+                <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80" alt="Lumiere Luxury">
+            </div>
+        </div>
+    </section>
+
+    <section id="products" class="section">
+        <div class="section-head">
+            <div class="kick">المعرض</div>
+            <h2>منتجاتنا المختارة</h2>
+            <div class="line"></div>
+            <p>اختر ما يناسبك من تشكيلتنا الفاخرة</p>
+        </div>
+
+        <div class="filters">
+            <button class="chip active">الكل</button>
+            <button class="chip">خواتم</button>
+            <button class="chip">قلادات</button>
+            <button class="chip">أساور</button>
+        </div>
+
+        <div class="grid">
+            <div class="card-p" onclick="openModal(event)">
+                <img class="ph" src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=500&q=80" alt="Product">
+                <div class="body">
+                    <div class="name">خاتم لوميير الذهبي</div>
+                    <div class="meta">ذهب عيار 18 - مرصع بالألماس</div>
+                    <div class="from">ابتداءً من <b>1,200</b> ر.س</div>
+                </div>
+            </div>
+
+            <div class="card-p" onclick="openModal(event)">
+                <div class="ph-empty">LUMIÈRE</div>
+                <div class="body">
+                    <div class="name">قلادة الأناقة الكلاسيكية</div>
+                    <div class="meta">تصميم خاص محدود</div>
+                    <div class="from">ابتداءً من <b>2,500</b> ر.س</div>
+                </div>
+            </div>
+
+            <div class="card-p" onclick="openModal(event)">
+                <img class="ph" src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=500&q=80" alt="Product">
+                <div class="body">
+                    <div class="name">سوار الزمرد الملكي</div>
+                    <div class="meta">مجموعة الأحجار الكريمة</div>
+                    <div class="from">ابتداءً من <b>3,800</b> ر.س</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="productModal">
+        <div class="modal-box">
+            <div class="modal-head">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=80" alt="Product Detail">
+            </div>
+            <div class="modal-body">
+                <h3>خاتم لوميير الذهبي</h3>
+                <div class="sub">رقم القطعة: #LUM-8832</div>
+
+                <div class="desc">
+                    <div class="gl">تفاصيل القطعة</div>
+                    تم صياغة هذا الخاتم بكل حب وعناية على أيدي أمهر الصاغة، ليمثل تحفة فنية تدوم للأبد وتزين معصمك برونق الذهب الخالص.
+                </div>
+
+                <div class="results">
+                    <div class="r r-cash">
+                        <div class="tag">الدفع النقدي</div>
+                        <div class="p">1,200</div>
+                        <div class="u">ر.س شامل الضريبة</div>
+                    </div>
+                    <div class="r r-apple">
+                        <div class="tag">Apple Pay</div>
+                        <div class="p">1,200</div>
+                        <div class="u">دفع سريع وآمن</div>
+                    </div>
+                    <div class="r r-tabby">
+                        <div class="tag">اقساط تابي</div>
+                        <div class="p">300</div>
+                        <div class="u">على 4 دفعات بدون فوائد</div>
+                    </div>
+                </div>
+
+                <div class="compare">
+                    <div class="ct">مقارنة الأسعار</div>
+                    <div class="big">سعرنا الأقل بـ <em>35%</em></div>
+                    <div class="ex">متوسط سعر السوق لهذه القطعة هو 1,850 ر.س</div>
+                    <div class="note">* المقارنة مبنية على قطع مشابهة في الوزن والجودة ونقاء الألماس.</div>
+                </div>
+
+                <button class="btn btn-wa" style="width: 100%; justify-content: center;" onclick="openWhatsApp()">
+                    اطلب الآن عبر الواتساب
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <section id="why-us" class="section">
+        <div class="section-head">
+            <div class="kick">ميزتنا</div>
+            <h2>لماذا تختار لوميير؟</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="n">01</div>
+                <h4>جودة استثنائية</h4>
+                <p>نضمن لك جودة المعادن والأحجار الكريمة المستخدمة مع شهادات فحص معتمدة لكل قطعة.</p>
+            </div>
+            <div class="why-card">
+                <div class="n">02</div>
+                <h4>تصاميم حصرية</h4>
+                <p>قطعنا تصمم بكميات محدودة جداً لضمان تميزك وانفرادك في كل مناسبة.</p>
+            </div>
+            <div class="why-card">
+                <div class="n">03</div>
+                <h4>شحن آمن ومؤمن</h4>
+                <p>تصلك شحنتك حتى باب منزلك عبر صناديق فاخرة ومؤمن عليها بالكامل ضد الضياع.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="custom" class="section">
+        <div class="section-head">
+            <div class="kick">طلب خاص</div>
+            <h2>صمم قطعتك بنفسك</h2>
+            <div class="line"></div>
+            <p>أرسل لنا تفاصيل التصميم الذي تحلم به وسيقوم خبراؤنا بتحويله إلى حقيقة</p>
+        </div>
+
+        <div class="custom-wrap">
+            <form onsubmit="submitCustomOrder(event)">
+                <div class="field">
+                    <label>نوع المعدن المفضل</label>
+                    <div class="opts">
+                        <div class="opt sel" data-value="yellow">ذهب أصفر</div>
+                        <div class="opt" data-value="white">ذهب أبيض</div>
+                        <div class="opt" data-value="platinum">بلاتين</div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>الاسم بالكامل</label>
+                    <input type="text" placeholder="اكتب اسمك الثلاثي" required>
+                </div>
+
+                <div class="field">
+                    <label>تفاصيل التصميم والمقاسات</label>
+                    <textarea placeholder="اذكر هنا المقاس التقريبي، الأحجار المرغوبة، وأي تفاصيل أخرى..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-gold" style="width: 100%; justify-content: center;">
+                    إرسال الطلب للمراجعة
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="fm">LUMIÈRE<span>.</span></div>
+        <p class="ft">جميع الحقوق محفوظة © 2026 لوميير للتصاميم الفاخرة. نسعى دائماً لتقديم الأجمل لك.</p>
+        <a href="#" class="adm">لوحة التحكم الإدارية</a>
+    </footer>
+
+    <div class="toast" id="toast">تم حفظ التعديلات بنجاح</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
