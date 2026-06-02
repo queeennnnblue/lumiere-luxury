@@ -1,222 +1,525 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeMore Pricing Calculator</title>
+    <title>آلة حساب الأسعار | LeMore Pricing Calculator</title>
     <style>
         :root {
             --primary-color: #2c3e50;
-            --accent-color: #d4af37; /* Subtle gold accent */
+            --accent-color: #d4af37;
             --bg-color: #f9f9f9;
             --border-color: #e0e0e0;
         }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: var(--primary-color);
-            margin: 0;
-            padding: 40px 20px;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
+        
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--accent-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .lang-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .currency-switcher {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .curr-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--accent-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .curr-btn.active {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .curr-btn:hover {
+            transform: translateY(-2px);
+        }
+        
         .container {
             background-color: #ffffff;
-            padding: 30px 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            max-width: 800px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 900px;
             width: 100%;
         }
-        h2 {
-            text-align: center;
-            font-weight: 400;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
-            display: inline-block;
-        }
+        
         .header-container {
             text-align: center;
+            margin-bottom: 40px;
         }
+        
+        h2 {
+            font-size: 2.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .subtitle {
+            color: var(--accent-color);
+            font-size: 0.95em;
+            margin-bottom: 20px;
+        }
+        
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 25px;
+            margin-bottom: 30px;
         }
+        
         .section {
-            background: #fdfdfd;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
+        
         .section h3 {
-            font-size: 1.1em;
-            margin-top: 0;
-            margin-bottom: 15px;
+            font-size: 1.3em;
+            margin-bottom: 20px;
             color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
         }
+        
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
+        
         label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 0.9em;
+            margin-bottom: 6px;
+            font-size: 0.95em;
             font-weight: 600;
+            color: var(--primary-color);
         }
+        
         input[type="number"] {
             width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
             box-sizing: border-box;
             font-family: inherit;
+            font-size: 1em;
+            transition: all 0.3s;
         }
+        
         input:focus {
             outline: none;
             border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
         }
+        
+        .sub-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
         button {
             width: 100%;
-            padding: 15px;
-            background-color: var(--primary-color);
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a252f 100%);
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 1.1em;
+            border-radius: 8px;
+            font-size: 1.15em;
+            font-weight: bold;
             cursor: pointer;
-            margin-top: 20px;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
+        
         button:hover {
-            background-color: #1a252f;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
         }
+        
+        button:active {
+            transform: translateY(-1px);
+        }
+        
         .results {
             margin-top: 30px;
-            padding: 20px;
-            background-color: var(--primary-color);
+            padding: 25px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a252f 100%);
             color: white;
-            border-radius: 6px;
+            border-radius: 10px;
+            display: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            animation: slideIn 0.4s ease;
         }
+        
+        .results.show {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .results p {
-            margin: 10px 0;
+            margin: 14px 0;
             display: flex;
             justify-content: space-between;
-            font-size: 1.05em;
+            font-size: 1.08em;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
+        
+        .results p:last-child {
+            border-bottom: none;
+        }
+        
         .final-price {
-            font-size: 1.4em !important;
+            font-size: 1.6em !important;
             font-weight: bold;
-            color: var(--accent-color);
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 15px;
-            margin-top: 15px !important;
+            color: var(--accent-color) !important;
+            border-top: 2px solid var(--accent-color) !important;
+            padding-top: 18px !important;
+            margin-top: 18px !important;
         }
-        @media (max-width: 600px) {
+        
+        .result-label {
+            font-weight: 500;
+        }
+        
+        .result-value {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .error-message {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
             .grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
             }
+            
+            .sub-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h2 {
+                font-size: 1.6em;
+            }
+            
+            .language-switcher {
+                right: 10px;
+                top: 10px;
+                gap: 5px;
+            }
+            
+            .currency-switcher {
+                left: 10px;
+                top: 10px;
+                gap: 5px;
+            }
+            
+            .lang-btn, .curr-btn {
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
 
+<div class="language-switcher">
+    <button class="lang-btn active" onclick="switchLanguage('ar')">العربية</button>
+    <button class="lang-btn" onclick="switchLanguage('en')">English</button>
+</div>
+
+<div class="currency-switcher">
+    <button class="curr-btn active" onclick="switchCurrency('SAR')">ر.س</button>
+    <button class="curr-btn" onclick="switchCurrency('USD')">$</button>
+</div>
+
 <div class="container">
     <div class="header-container">
-        <h2>LeMore Pricing Calculator</h2>
+        <h2 id="title">آلة حساب الأسعار</h2>
+        <p class="subtitle" id="subtitle">احسب السعر النهائي للبيع بناءً على تكاليفك</p>
     </div>
 
     <div class="grid">
         <div class="section">
-            <h3>Product Specifics</h3>
+            <h3 id="sec1">مواصفات المنتج</h3>
             <div class="form-group">
-                <label for="baseCost">Base Cost per Piece (SAR)</label>
-                <input type="number" id="baseCost" placeholder="e.g., 500" step="0.01">
+                <label for="baseCost" id="label1">سعر القطعة الواحدة</label>
+                <input type="number" id="baseCost" placeholder="مثال: 500" step="0.01">
             </div>
             <div class="form-group">
-                <label for="units">Expected Sales Volume (Units)</label>
+                <label for="units" id="label2">عدد القطع المتوقعة للبيع</label>
                 <input type="number" id="units" value="50" min="1">
             </div>
             <div class="form-group">
-                <label for="shipping">Shipping per Product (SAR)</label>
+                <label for="shipping" id="label3">تكاليف الشحن لكل منتج</label>
                 <input type="number" id="shipping" value="6.56" step="0.01">
             </div>
         </div>
 
         <div class="section">
-            <h3>Overhead & Settings</h3>
+            <h3 id="sec2">النفقات والرسوم</h3>
             <div class="form-group">
-                <label for="fixedCosts">Total Fixed Costs (SAR)</label>
+                <label for="fixedCosts" id="label4">إجمالي النفقات الثابتة</label>
                 <input type="number" id="fixedCosts" value="2112" step="1">
             </div>
             <div class="form-group">
-                <label for="monthlyCosts">Total Monthly Costs (SAR)</label>
+                <label for="monthlyCosts" id="label5">إجمالي النفقات الشهرية</label>
                 <input type="number" id="monthlyCosts" value="1200" step="1">
             </div>
-            <div class="grid" style="gap: 10px;">
+            <div class="sub-grid">
                 <div class="form-group">
-                    <label for="paymentFee">Payment (%)</label>
+                    <label for="paymentFee" id="label6">رسوم الدفع (%)</label>
                     <input type="number" id="paymentFee" value="3.8" step="0.1">
                 </div>
                 <div class="form-group">
-                    <label for="processingFee">Processing (%)</label>
+                    <label for="processingFee" id="label7">رسوم المعالجة (%)</label>
                     <input type="number" id="processingFee" value="6.0" step="0.1">
                 </div>
-                <div class="form-group">
-                    <label for="profitMargin">Target Profit (%)</label>
-                    <input type="number" id="profitMargin" value="6.0" step="0.1">
-                </div>
+            </div>
+            <div class="form-group">
+                <label for="profitMargin" id="label8">هامش الربح المستهدف (%)</label>
+                <input type="number" id="profitMargin" value="6.0" step="0.1">
             </div>
         </div>
     </div>
 
-    <button onclick="calculatePrice()">Calculate Final Price</button>
+    <button onclick="calculatePrice()" id="calcBtn">احسب السعر النهائي</button>
 
-    <div class="results" id="resultsArea" style="display: none;">
-        <p><span>Base Cost + Shipping:</span> <span id="resBase">0 SAR</span></p>
-        <p><span>Apportioned Overhead (per unit):</span> <span id="resOverhead">0 SAR</span></p>
-        <p><span>Total Unit Cost (Break-even):</span> <span id="resTotalCost">0 SAR</span></p>
-        <p class="final-price"><span>Final Selling Price:</span> <span id="resFinalPrice">0 SAR</span></p>
+    <div class="error-message" id="errorMsg"></div>
+
+    <div class="results" id="resultsArea">
+        <p>
+            <span class="result-label" id="res1">سعر القطعة + الشحن:</span>
+            <span class="result-value" id="resBase">0</span>
+        </p>
+        <p>
+            <span class="result-label" id="res2">النفقات الموزعة لكل قطعة:</span>
+            <span class="result-value" id="resOverhead">0</span>
+        </p>
+        <p>
+            <span class="result-label" id="res3">إجمالي تكلفة القطعة:</span>
+            <span class="result-value" id="resTotalCost">0</span>
+        </p>
+        <p class="final-price">
+            <span class="result-label" id="res4">السعر النهائي للبيع:</span>
+            <span class="result-value" id="resFinalPrice">0</span>
+        </p>
     </div>
 </div>
 
 <script>
+    let currentLanguage = 'ar';
+    let currentCurrency = 'SAR';
+
+    const translations = {
+        ar: {
+            title: 'آلة حساب الأسعار',
+            subtitle: 'احسب السعر النهائي للبيع بناءً على تكاليفك',
+            sec1: 'مواصفات المنتج',
+            sec2: 'النفقات والرسوم',
+            label1: 'سعر القطعة الواحدة',
+            label2: 'عدد القطع المتوقعة للبيع',
+            label3: 'تكاليف الشحن لكل منتج',
+            label4: 'إجمالي النفقات الثابتة',
+            label5: 'إجمالي النفقات الشهرية',
+            label6: 'رسوم الدفع (%)',
+            label7: 'رسوم المعالجة (%)',
+            label8: 'هامش الربح المستهدف (%)',
+            calcBtn: 'احسب السعر النهائي',
+            res1: 'سعر القطعة + الشحن:',
+            res2: 'النفقات الموزعة لكل قطعة:',
+            res3: 'إجمالي تكلفة القطعة:',
+            res4: 'السعر النهائي للبيع:',
+            error: 'خطأ: مجموع النسب المئوية لا يمكن أن يكون 100% أو أكثر'
+        },
+        en: {
+            title: 'LeMore Pricing Calculator',
+            subtitle: 'Calculate your final selling price based on your costs',
+            sec1: 'Product Specifics',
+            sec2: 'Overhead & Settings',
+            label1: 'Base Cost per Piece',
+            label2: 'Expected Sales Volume (Units)',
+            label3: 'Shipping per Product',
+            label4: 'Total Fixed Costs',
+            label5: 'Total Monthly Costs',
+            label6: 'Payment Fee (%)',
+            label7: 'Processing Fee (%)',
+            label8: 'Target Profit (%)',
+            calcBtn: 'Calculate Final Price',
+            res1: 'Base Cost + Shipping:',
+            res2: 'Apportioned Overhead (per unit):',
+            res3: 'Total Unit Cost (Break-even):',
+            res4: 'Final Selling Price:',
+            error: 'Error: The sum of percentage fees and profit cannot be 100% or greater'
+        }
+    };
+
+    function switchLanguage(lang) {
+        currentLanguage = lang;
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        
+        // Update UI text
+        document.getElementById('title').textContent = translations[lang].title;
+        document.getElementById('subtitle').textContent = translations[lang].subtitle;
+        document.getElementById('sec1').textContent = translations[lang].sec1;
+        document.getElementById('sec2').textContent = translations[lang].sec2;
+        document.getElementById('label1').textContent = translations[lang].label1;
+        document.getElementById('label2').textContent = translations[lang].label2;
+        document.getElementById('label3').textContent = translations[lang].label3;
+        document.getElementById('label4').textContent = translations[lang].label4;
+        document.getElementById('label5').textContent = translations[lang].label5;
+        document.getElementById('label6').textContent = translations[lang].label6;
+        document.getElementById('label7').textContent = translations[lang].label7;
+        document.getElementById('label8').textContent = translations[lang].label8;
+        document.getElementById('calcBtn').textContent = translations[lang].calcBtn;
+        document.getElementById('res1').textContent = translations[lang].res1;
+        document.getElementById('res2').textContent = translations[lang].res2;
+        document.getElementById('res3').textContent = translations[lang].res3;
+        document.getElementById('res4').textContent = translations[lang].res4;
+        
+        // Update language buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    function switchCurrency(currency) {
+        currentCurrency = currency;
+        document.querySelectorAll('.curr-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    function formatCurrency(value) {
+        if (currentCurrency === 'SAR') {
+            return value.toFixed(2) + ' ر.س';
+        } else {
+            return '$' + value.toFixed(2);
+        }
+    }
+
     function calculatePrice() {
-        // Retrieve values
         const baseCost = parseFloat(document.getElementById('baseCost').value) || 0;
         const units = parseFloat(document.getElementById('units').value) || 1;
         const shipping = parseFloat(document.getElementById('shipping').value) || 0;
-        
         const fixedCosts = parseFloat(document.getElementById('fixedCosts').value) || 0;
         const monthlyCosts = parseFloat(document.getElementById('monthlyCosts').value) || 0;
-        
         const paymentFee = parseFloat(document.getElementById('paymentFee').value) || 0;
         const processingFee = parseFloat(document.getElementById('processingFee').value) || 0;
         const profitMargin = parseFloat(document.getElementById('profitMargin').value) || 0;
 
-        // Calculations
-        const overheadPerUnit = (fixedCosts + monthlyCosts) / units;
-        const totalUnitCost = baseCost + shipping + overheadPerUnit;
-        
+        const errorMsg = document.getElementById('errorMsg');
         const totalPercentageDeduction = (paymentFee + processingFee + profitMargin) / 100;
 
         if (totalPercentageDeduction >= 1) {
-            alert("Error: The sum of percentage fees and profit cannot be 100% or greater.");
+            errorMsg.textContent = translations[currentLanguage].error;
+            errorMsg.style.display = 'block';
+            document.getElementById('resultsArea').classList.remove('show');
             return;
         }
 
+        errorMsg.style.display = 'none';
+
+        const overheadPerUnit = (fixedCosts + monthlyCosts) / units;
+        const totalUnitCost = baseCost + shipping + overheadPerUnit;
         const finalPrice = totalUnitCost / (1 - totalPercentageDeduction);
 
-        // Populate Results
-        document.getElementById('resBase').innerText = (baseCost + shipping).toFixed(2) + ' SAR';
-        document.getElementById('resOverhead').innerText = overheadPerUnit.toFixed(2) + ' SAR';
-        document.getElementById('resTotalCost').innerText = totalUnitCost.toFixed(2) + ' SAR';
-        document.getElementById('resFinalPrice').innerText = finalPrice.toFixed(2) + ' SAR';
+        document.getElementById('resBase').textContent = formatCurrency(baseCost + shipping);
+        document.getElementById('resOverhead').textContent = formatCurrency(overheadPerUnit);
+        document.getElementById('resTotalCost').textContent = formatCurrency(totalUnitCost);
+        document.getElementById('resFinalPrice').textContent = formatCurrency(finalPrice);
 
-        // Display the results block
-        document.getElementById('resultsArea').style.display = 'block';
+        document.getElementById('resultsArea').classList.add('show');
     }
+
+    // Allow Enter key to calculate
+    document.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            calculatePrice();
+        }
+    });
 </script>
 
 </body>
