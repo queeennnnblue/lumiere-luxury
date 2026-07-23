@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMIÈRE — المجموعة الكاملة</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .collection-hero{padding:48px 24px 8px;text-align:center}
+  .collection-hero h1{font-family:var(--serif-ar);font-size:34px;color:var(--ink)}
+  .collection-hero .kick{margin-bottom:10px}
+  .collection-hero p{color:var(--muted);font-size:14px;margin-top:8px}
+  .collection-grid{
+    max-width:1160px;margin:32px auto 80px;padding:0 24px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:26px;
+  }
+  .piece{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    overflow:hidden;cursor:pointer;transition:transform .35s,box-shadow .35s;
+    box-shadow:0 6px 18px var(--shadow);
+  }
+  .piece:hover{transform:translateY(-6px);box-shadow:0 18px 40px var(--shadow)}
+  .piece img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+  .piece .cap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 14px;font-family:var(--serif-en);font-size:13px;
+    letter-spacing:2px;color:var(--gold-deep);
+  }
+  .piece .cap b{color:var(--ink);font-weight:600}
+  .lightbox{
+    display:none;position:fixed;inset:0;z-index:200;
+    background:rgba(42,36,32,.88);align-items:center;justify-content:center;padding:30px;
+  }
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:min(92vw,900px);max-height:90vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .lightbox .x{
+    position:fixed;top:18px;left:24px;font-size:34px;color:#fffdf9;
+    background:none;border:none;cursor:pointer;line-height:1;
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="index.html" style="text-decoration:none">
+      <div class="logo">
+        <div class="mark">LUMI<span>È</span>RE</div>
+        <div class="tag">Luxury Designs</div>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#products">المنتجات</a>
+      <a href="collection.html" style="color:var(--gold-deep)">المجموعة</a>
+    </nav>
+  </div>
+</header>
+
+<section class="collection-hero">
+  <div class="kick">The Collection</div>
+  <h1 class="serif">المجموعة الكاملة</h1>
+  <p>خمسون قطعة مصوّرة بهوية لوميير الموحّدة — إضاءة الساعة الذهبية وخلفية كريمية فاخرة</p>
+</section>
+
+<div class="collection-grid" id="grid"></div>
+
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+  <button class="x" aria-label="إغلاق">&times;</button>
+  <img id="lightboxImg" src="" alt="LUMIÈRE piece">
+</div>
+
+<script>
+  const grid = document.getElementById('grid');
+  for (let i = 1; i <= 50; i++) {
+    const n = String(i).padStart(2, '0');
+    const card = document.createElement('div');
+    card.className = 'piece';
+    card.innerHTML = `
+      <img loading="lazy" src="store-assets/products-web/lumiere_${n}.jpg" alt="LUMIÈRE N° ${n}">
+      <div class="cap"><span>LUMIÈRE</span><b>N° ${n}</b></div>`;
+    card.onclick = () => {
+      document.getElementById('lightboxImg').src = `store-assets/products-web/lumiere_${n}.jpg`;
+      document.getElementById('lightbox').classList.add('open');
+    };
+    grid.appendChild(card);
+  }
+</script>
+</body>
+</html>
