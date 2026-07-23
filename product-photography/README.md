@@ -1,9 +1,9 @@
-# LUMIÈRE — Uniform Product Photography Pipeline
+# LOMOND — Uniform Product Photography Pipeline
 
 Turns mixed raw product photos (clean shots, phone screenshots, catalog pages)
 into a uniform, on-brand set of **4096×4096 (4K)** store visuals. The jewelry
 itself is never altered or regenerated — photos are only cropped, cleaned of
-app UI, gently sharpened and placed on the LUMIÈRE brand background.
+app UI, gently sharpened and placed on the LOMOND brand background.
 
 ## The look
 
@@ -12,7 +12,7 @@ app UI, gently sharpened and placed on the LUMIÈRE brand background.
 - Double gold hairline frame (`#c9a55c` / `#9a7b3a`)
 - Product window with gold gradient border and soft shadow
 - Subtle gold/ivory sparkles kept off the jewelry
-- `LUMIÈRE` wordmark in Cormorant Garamond + `N° xx / 50` piece numbering
+- burgundy `LOMOND` logo (#4d0c11, from the brand PDF) + `N° xx / 50` piece numbering
 
 ## Usage
 

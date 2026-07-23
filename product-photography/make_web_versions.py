@@ -6,7 +6,7 @@ from PIL import Image
 src_dir = sys.argv[1] if len(sys.argv) > 1 else '../store-assets/products-4k'
 out_dir = sys.argv[2] if len(sys.argv) > 2 else '../store-assets/products-web'
 os.makedirs(out_dir, exist_ok=True)
-for f in sorted(glob.glob(os.path.join(src_dir, 'lumiere_*.jpg'))):
+for f in sorted(glob.glob(os.path.join(src_dir, 'lomond_*.jpg'))):
     im = Image.open(f)
     im = im.resize((1600, 1600), Image.LANCZOS)
     out = os.path.join(out_dir, os.path.basename(f))

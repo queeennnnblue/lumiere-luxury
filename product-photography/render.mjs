@@ -29,7 +29,7 @@ for (const file of products) {
     puppeteerInstance: browser,
     browserExecutable,
   });
-  const output = path.join(outDir, `lumiere_${String(index).padStart(2, '0')}.jpg`);
+  const output = path.join(outDir, `lomond_${String(index).padStart(2, '0')}.jpg`);
   await renderStill({
     composition,
     serveUrl,

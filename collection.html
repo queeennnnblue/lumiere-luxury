@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LUMIÈRE — المجموعة الكاملة</title>
+<title>LOMOND — المجموعة الكاملة</title>
 <link rel="stylesheet" href="styles.css">
 <style>
   .collection-hero{padding:48px 24px 8px;text-align:center}
@@ -46,8 +46,8 @@
   <div class="topbar-inner">
     <a href="index.html" style="text-decoration:none">
       <div class="logo">
-        <div class="mark">LUMI<span>È</span>RE</div>
-        <div class="tag">Luxury Designs</div>
+        <img src="store-assets/brand/lomond_logo.png" alt="LOMOND" style="height:30px;display:block">
+        <div class="tag" style="margin-top:4px">Fine Jewelry House</div>
       </div>
     </a>
     <nav class="nav">
@@ -61,14 +61,14 @@
 <section class="collection-hero">
   <div class="kick">The Collection</div>
   <h1 class="serif">المجموعة الكاملة</h1>
-  <p>خمسون قطعة مصوّرة بهوية لوميير الموحّدة — إضاءة الساعة الذهبية وخلفية كريمية فاخرة</p>
+  <p>خمسون قطعة مصوّرة بهوية لوموند الموحّدة — إضاءة الساعة الذهبية وخلفية كريمية فاخرة</p>
 </section>
 
 <div class="collection-grid" id="grid"></div>
 
 <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
   <button class="x" aria-label="إغلاق">&times;</button>
-  <img id="lightboxImg" src="" alt="LUMIÈRE piece">
+  <img id="lightboxImg" src="" alt="LOMOND piece">
 </div>
 
 <script>
@@ -78,10 +78,10 @@
     const card = document.createElement('div');
     card.className = 'piece';
     card.innerHTML = `
-      <img loading="lazy" src="store-assets/products-web/lumiere_${n}.jpg" alt="LUMIÈRE N° ${n}">
-      <div class="cap"><span>LUMIÈRE</span><b>N° ${n}</b></div>`;
+      <img loading="lazy" src="store-assets/products-web/lomond_${n}.jpg" alt="LOMOND N° ${n}">
+      <div class="cap"><span>LOMOND</span><b>N° ${n}</b></div>`;
     card.onclick = () => {
-      document.getElementById('lightboxImg').src = `store-assets/products-web/lumiere_${n}.jpg`;
+      document.getElementById('lightboxImg').src = `store-assets/products-web/lomond_${n}.jpg`;
       document.getElementById('lightbox').classList.add('open');
     };
     grid.appendChild(card);

@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {AbsoluteFill, Img, staticFile, delayRender, continueRender} from 'remotion';
 
-// LUMIÈRE brand palette (matches styles.css)
+// LOMOND brand palette (sampled from the logo PDF)
+const BURGUNDY = '#4d0c11';
+const BURGUNDY_SOFT = 'rgba(77,12,17,0.55)';
 const GOLD = '#c9a55c';
 const GOLD_DEEP = '#9a7b3a';
-const INK = '#2a2420';
-const MUTED = '#8a8178';
 
 const SIZE = 4096;
-const PANEL = 2530; // product window
-const PANEL_TOP = 640;
+const PANEL = 2620; // product window — generous, the jewelry is the hero
+const PANEL_TOP = 560;
 
 // Deterministic pseudo-random for sparkle placement (stable per product)
 const rand = (seed: number) => {
@@ -46,8 +46,8 @@ export const ProductCard: React.FC<{src: string; index: number; total: number}> 
   }, [handle]);
 
   const rnd = rand(index * 7919 + 13);
-  const sparkles = Array.from({length: 26}, (_, i) => {
-    const margin = 380;
+  const sparkles = Array.from({length: 28}, (_, i) => {
+    const margin = 340;
     const zone = i % 4; // top / bottom / left / right margins only
     const x =
       zone === 0 || zone === 1
@@ -57,9 +57,9 @@ export const ProductCard: React.FC<{src: string; index: number; total: number}> 
           : SIZE - 130 - margin + rnd() * margin;
     const y =
       zone === 0
-        ? rnd() * (PANEL_TOP - 250) + 170
+        ? rnd() * (PANEL_TOP - 250) + 150
         : zone === 1
-          ? PANEL_TOP + PANEL + 90 + rnd() * 280
+          ? PANEL_TOP + PANEL + 90 + rnd() * 260
           : PANEL_TOP + rnd() * PANEL;
     const s = 18 + rnd() * 54;
     return {x, y, s, o: 0.18 + rnd() * 0.5, c: rnd() > 0.35 ? GOLD : '#fffdf5', r: rnd() * 90};
@@ -72,10 +72,10 @@ export const ProductCard: React.FC<{src: string; index: number; total: number}> 
       style={{
         fontFamily: 'CormorantG, serif',
         background: `
-          radial-gradient(circle at 18% 8%, rgba(255,214,140,0.55) 0%, rgba(255,214,140,0.18) 28%, transparent 55%),
-          radial-gradient(circle at 85% 90%, rgba(201,165,92,0.22) 0%, transparent 45%),
-          radial-gradient(circle at 50% 45%, rgba(255,253,247,0.9) 0%, transparent 60%),
-          linear-gradient(158deg, #fdf9ef 0%, #f8f0dd 38%, #f1e3c6 72%, #e9d7b2 100%)`,
+          radial-gradient(circle at 18% 8%, rgba(255,214,140,0.5) 0%, rgba(255,214,140,0.16) 28%, transparent 55%),
+          radial-gradient(circle at 85% 90%, rgba(77,12,17,0.10) 0%, transparent 45%),
+          radial-gradient(circle at 50% 45%, rgba(255,252,246,0.9) 0%, transparent 60%),
+          linear-gradient(158deg, #faf4ea 0%, #f2e8d8 40%, #efe4db 70%, #e3d2bd 100%)`,
       }}
     >
       {/* golden-hour light rays from top-left */}
@@ -88,7 +88,7 @@ export const ProductCard: React.FC<{src: string; index: number; total: number}> 
       {/* soft vignette */}
       <AbsoluteFill
         style={{
-          background: 'radial-gradient(circle at 50% 50%, transparent 55%, rgba(154,123,58,0.13) 100%)',
+          background: 'radial-gradient(circle at 50% 50%, transparent 55%, rgba(77,12,17,0.10) 100%)',
         }}
       />
 
@@ -97,22 +97,23 @@ export const ProductCard: React.FC<{src: string; index: number; total: number}> 
         <Sparkle key={i} {...sp} />
       ))}
 
-      {/* double gold hairline frame */}
+      {/* double hairline frame — gold outside, burgundy inside */}
       <div style={{position: 'absolute', inset: 96, border: `4px solid ${GOLD}`, opacity: 0.9}} />
-      <div style={{position: 'absolute', inset: 132, border: `1.5px solid ${GOLD_DEEP}`, opacity: 0.55}} />
+      <div style={{position: 'absolute', inset: 132, border: `1.5px solid ${BURGUNDY}`, opacity: 0.45}} />
 
       {/* kick line */}
       <div
         style={{
           position: 'absolute',
-          top: 250,
+          top: 236,
           width: '100%',
           textAlign: 'center',
           fontSize: 64,
           fontWeight: 500,
           letterSpacing: 30,
-          color: GOLD_DEEP,
+          color: BURGUNDY,
           textTransform: 'uppercase',
+          opacity: 0.85,
         }}
       >
         Fine Jewelry
@@ -121,13 +122,13 @@ export const ProductCard: React.FC<{src: string; index: number; total: number}> 
       <div
         style={{
           position: 'absolute',
-          top: 190,
+          top: 186,
           right: 210,
           fontSize: 52,
           fontWeight: 500,
           letterSpacing: 6,
-          color: GOLD_DEEP,
-          opacity: 0.85,
+          color: BURGUNDY,
+          opacity: 0.8,
         }}
       >
         N° {num} / {total}
@@ -144,7 +145,7 @@ export const ProductCard: React.FC<{src: string; index: number; total: number}> 
           borderRadius: 34,
           padding: 10,
           background: `linear-gradient(135deg, ${GOLD} 0%, #e8d5a8 30%, ${GOLD} 55%, ${GOLD_DEEP} 100%)`,
-          boxShadow: '0 90px 180px rgba(42,36,32,0.30), 0 30px 70px rgba(42,36,32,0.20)',
+          boxShadow: '0 90px 180px rgba(77,12,17,0.28), 0 30px 70px rgba(77,12,17,0.18)',
         }}
       >
         <div style={{position: 'relative', width: '100%', height: '100%', borderRadius: 26, overflow: 'hidden'}}>
@@ -172,28 +173,30 @@ export const ProductCard: React.FC<{src: string; index: number; total: number}> 
         </div>
       </div>
 
-      {/* wordmark */}
-      <div style={{position: 'absolute', top: 3330, width: '100%', textAlign: 'center'}}>
-        <div style={{fontSize: 210, fontWeight: 700, letterSpacing: 44, color: INK, marginLeft: 44}}>
-          LUMI<span style={{color: GOLD}}>È</span>RE
-        </div>
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 40, marginTop: 26}}>
+      {/* LOMOND logo lockup */}
+      <div style={{position: 'absolute', top: 3360, width: '100%', textAlign: 'center'}}>
+        <Img
+          src={staticFile('brand/lomond_logo.png')}
+          style={{width: 1150, display: 'inline-block'}}
+        />
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 40, marginTop: 60}}>
           <div style={{width: 300, height: 3, background: `linear-gradient(90deg, transparent, ${GOLD})`}} />
-          <div style={{color: GOLD, fontSize: 44, lineHeight: 1}}>◆</div>
+          <div style={{color: BURGUNDY_SOFT, fontSize: 44, lineHeight: 1}}>◆</div>
           <div style={{width: 300, height: 3, background: `linear-gradient(90deg, ${GOLD}, transparent)`}} />
         </div>
         <div
           style={{
-            fontSize: 58,
+            fontSize: 56,
             fontWeight: 500,
-            letterSpacing: 34,
-            color: MUTED,
+            letterSpacing: 32,
+            color: BURGUNDY,
             textTransform: 'uppercase',
-            marginTop: 30,
-            marginLeft: 34,
+            marginTop: 28,
+            marginLeft: 32,
+            opacity: 0.75,
           }}
         >
-          Luxury Designs
+          Fine Jewelry House
         </div>
       </div>
     </AbsoluteFill>
