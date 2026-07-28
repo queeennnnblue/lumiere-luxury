@@ -4,7 +4,6 @@ import {
   OffthreadVideo,
   Sequence,
   interpolate,
-  spring,
   staticFile,
   useCurrentFrame,
   useVideoConfig,
@@ -12,21 +11,26 @@ import {
 
 const FPS = 30;
 
-// مقاطع مختارة من الفيديو الأصلي (بالثواني)
+// مقاطع مختارة من الفيديو الأصلي (بالثواني) — هوك سريع ثم لقطات أطول للفويس أوفر
 type Clip = {
-  from: number; // بداية المقطع في المصدر
-  duration: number; // مدة المقطع
-  caption: string;
-  sub?: string;
+  from: number;
+  duration: number;
+  hook?: boolean;
 };
 
 export const CLIPS: Clip[] = [
-  {from: 1.5, duration: 5, caption: 'يوم عفوي في الجيم 🖤', sub: 'GYM DIARY'},
-  {from: 7.0, duration: 4, caption: 'وطبعًا الألماس معي ✨'},
-  {from: 36.0, duration: 5, caption: 'سوار التنس ما يفارق معصمي 💎'},
-  {from: 44.5, duration: 5, caption: 'لمعة تثبت معك مهما تحرّكت'},
-  {from: 60.0, duration: 5, caption: 'قطع مصمّمة تتحمّل يومك كله 💪'},
-  {from: 83.5, duration: 4.5, caption: 'عفوية… وفخامة 🤍', sub: 'LUMIÈRE'},
+  // الهوك: 3 لقطات خاطفة
+  {from: 7.5, duration: 0.8, hook: true},
+  {from: 37.0, duration: 0.8, hook: true},
+  {from: 84.5, duration: 0.8, hook: true},
+  // المقطع الأساسي
+  {from: 1.5, duration: 4.5},
+  {from: 8.5, duration: 3.5},
+  {from: 38.5, duration: 4},
+  {from: 45.0, duration: 4},
+  {from: 60.5, duration: 4.5},
+  {from: 70.0, duration: 3.5},
+  {from: 84.0, duration: 4},
 ];
 
 export const TOTAL_FRAMES = Math.round(
@@ -35,82 +39,15 @@ export const TOTAL_FRAMES = Math.round(
 
 const fontCss = `
 @font-face {
-  font-family: 'Cairo';
-  font-weight: 700;
-  src: url('${staticFile('Cairo-Bold.ttf')}') format('truetype');
-}
-@font-face {
-  font-family: 'Cairo';
-  font-weight: 400;
-  src: url('${staticFile('Cairo-Regular.ttf')}') format('truetype');
-}
-@font-face {
   font-family: 'Marhey';
   font-weight: 700;
   src: url('${staticFile('Marhey-Bold.ttf')}') format('truetype');
 }
 `;
 
-const Caption: React.FC<{text: string; sub?: string}> = ({text, sub}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const pop = spring({frame, fps, config: {damping: 14, mass: 0.7}});
-  const y = interpolate(pop, [0, 1], [40, 0]);
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 420,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 18,
-        opacity: pop,
-        transform: `translateY(${y}px)`,
-      }}
-    >
-      {sub ? (
-        <div
-          style={{
-            fontFamily: 'Marhey, Cairo, sans-serif',
-            fontWeight: 700,
-            fontSize: 34,
-            letterSpacing: 14,
-            color: '#e8c87a',
-            textShadow: '0 2px 18px rgba(0,0,0,0.9)',
-          }}
-        >
-          {sub}
-        </div>
-      ) : null}
-      <div
-        dir="rtl"
-        style={{
-          fontFamily: 'Cairo, sans-serif',
-          fontWeight: 700,
-          fontSize: 62,
-          lineHeight: 1.5,
-          color: '#ffffff',
-          background: 'rgba(0,0,0,0.42)',
-          borderRadius: 28,
-          padding: '10px 44px',
-          maxWidth: 940,
-          textAlign: 'center',
-          textShadow: '0 3px 22px rgba(0,0,0,0.85)',
-          backdropFilter: 'blur(6px)',
-        }}
-      >
-        {text}
-      </div>
-    </div>
-  );
-};
-
 const Watermark: React.FC = () => {
   const frame = useCurrentFrame();
-  const opacity = interpolate(frame, [20, 50], [0, 1], {
+  const opacity = interpolate(frame, [15, 45], [0, 0.9], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
@@ -122,15 +59,13 @@ const Watermark: React.FC = () => {
         left: 0,
         right: 0,
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 4,
+        justifyContent: 'center',
         opacity,
       }}
     >
       <div
         style={{
-          fontFamily: 'Marhey, Cairo, sans-serif',
+          fontFamily: 'Marhey, sans-serif',
           fontWeight: 700,
           fontSize: 44,
           letterSpacing: 18,
@@ -138,19 +73,7 @@ const Watermark: React.FC = () => {
           textShadow: '0 2px 16px rgba(0,0,0,0.9)',
         }}
       >
-        LUMIÈRE
-      </div>
-      <div
-        style={{
-          fontFamily: 'Cairo, sans-serif',
-          fontWeight: 400,
-          fontSize: 26,
-          letterSpacing: 6,
-          color: 'rgba(255,255,255,0.75)',
-          textShadow: '0 2px 12px rgba(0,0,0,0.9)',
-        }}
-      >
-        لوميـير
+        LOMOND
       </div>
     </div>
   );
@@ -172,7 +95,7 @@ const ClipSegment: React.FC<{clip: Clip; isLast: boolean}> = ({
 }) => {
   const frame = useCurrentFrame();
   const {durationInFrames} = useVideoConfig();
-  const fadeIn = interpolate(frame, [0, 6], [0, 1], {
+  const fadeIn = interpolate(frame, [0, clip.hook ? 2 : 5], [0, 1], {
     extrapolateRight: 'clamp',
   });
   const fadeOut = isLast
@@ -180,8 +103,10 @@ const ClipSegment: React.FC<{clip: Clip; isLast: boolean}> = ({
         extrapolateLeft: 'clamp',
       })
     : 1;
-  // حركة تقريب خفيفة تعطي إحساس المونتاج الحي
-  const scale = interpolate(frame, [0, durationInFrames], [1.04, 1.1]);
+  // اللقطات الخاطفة تبدأ مقرّبة أكثر لإحساس أسرع
+  const scale = clip.hook
+    ? interpolate(frame, [0, durationInFrames], [1.15, 1.08])
+    : interpolate(frame, [0, durationInFrames], [1.04, 1.1]);
   return (
     <AbsoluteFill style={{opacity: fadeIn * fadeOut, backgroundColor: 'black'}}>
       <AbsoluteFill style={{transform: `scale(${scale})`}}>
@@ -194,16 +119,15 @@ const ClipSegment: React.FC<{clip: Clip; isLast: boolean}> = ({
               ? interpolate(
                   f,
                   [0, durationInFrames - 25, durationInFrames - 1],
-                  [0.9, 0.9, 0],
+                  [0.5, 0.5, 0],
                   {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}
                 )
-              : 0.9
+              : 0.5
           }
           style={{width: '100%', height: '100%', objectFit: 'cover'}}
         />
       </AbsoluteFill>
       <Vignette />
-      <Caption text={clip.caption} sub={clip.sub} />
     </AbsoluteFill>
   );
 };
