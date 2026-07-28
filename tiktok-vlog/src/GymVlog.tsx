@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   AbsoluteFill,
+  Img,
   OffthreadVideo,
   Sequence,
   interpolate,
@@ -13,13 +14,15 @@ import {
 const FPS = 30;
 
 // ألوان هوية لوموند
-const MAROON = '#5D131F';
-const CREAM = '#EDE3D5';
+const BURGUNDY = '#4D0E13';
+const CREME = '#EEE4DA';
+const DUSTY_PINK = '#C8A49F';
 
 type Clip = {
   from: number;
   duration: number;
   caption?: string;
+  emojis?: string[]; // أكواد إيموجي آيفون (صور)
   hook?: boolean;
 };
 
@@ -29,13 +32,13 @@ export const CLIPS: Clip[] = [
   {from: 37.5, duration: 0.7, hook: true},
   {from: 45.5, duration: 0.7, hook: true},
   {from: 84.5, duration: 0.9, hook: true},
-  {from: 1.5, duration: 4.5, caption: 'مبالغة؟ ممكن… بس شوفوا اللمعة ✨'},
-  {from: 8.5, duration: 3.5, caption: 'اللمعة هذي مو فلتر 💎'},
+  {from: 1.5, duration: 4.5, caption: 'مبالغة؟ ممكن… بس شوفوا اللمعة', emojis: ['2728']},
+  {from: 8.5, duration: 3.5, caption: 'اللمعة هذي مو فلتر', emojis: ['1f48e']},
   {from: 38.5, duration: 4, caption: 'يقولون الألماس للمناسبات بس…'},
-  {from: 45.0, duration: 4, caption: 'وأنا أقول: الألماس لكل يوم 😌'},
-  {from: 60.5, duration: 4.5, caption: 'حديد × ألماس… ولا خدشة 💪'},
+  {from: 45.0, duration: 4, caption: 'وأنا أقول: الألماس لكل يوم', emojis: ['1f60c']},
+  {from: 60.5, duration: 4.5, caption: 'حديد × ألماس… ولا خدشة', emojis: ['1f4aa']},
   {from: 70.0, duration: 3.5, caption: 'اللمعة باقية مهما سوّيت'},
-  {from: 84.0, duration: 4, caption: 'مبالغة ولا ستايل؟ احكموا 👇'},
+  {from: 84.0, duration: 4, caption: 'مبالغة ولا ستايل؟ احكموا', emojis: ['1f447']},
 ];
 
 const HOOK_FRAMES = Math.round(
@@ -53,59 +56,42 @@ const fontCss = `
   font-weight: 700;
   src: url('${staticFile('Cairo-Bold.ttf')}') format('truetype');
 }
-@font-face {
-  font-family: 'Shrikhand';
-  font-weight: 400;
-  src: url('${staticFile('Shrikhand.ttf')}') format('truetype');
-}
 `;
 
-// شعار لوموند: بادج عنابي بخط كريمي مموّج
-const LomondBadge: React.FC<{size?: number}> = ({size = 40}) => (
+const Emoji: React.FC<{code: string; size: number}> = ({code, size}) => (
+  <Img
+    src={staticFile(`emoji-${code}.png`)}
+    style={{width: size, height: size, margin: '0 6px', verticalAlign: 'middle'}}
+  />
+);
+
+// اللوقو الرسمي — ظاهر طول الفيديو
+const Watermark: React.FC = () => (
   <div
     style={{
-      background: MAROON,
-      borderRadius: size * 0.45,
-      padding: `${size * 0.28}px ${size * 0.85}px ${size * 0.42}px`,
-      boxShadow: '0 4px 24px rgba(0,0,0,0.55)',
+      position: 'absolute',
+      top: 110,
+      left: 0,
+      right: 0,
+      display: 'flex',
+      justifyContent: 'center',
     }}
   >
     <div
       style={{
-        fontFamily: 'Shrikhand, serif',
-        fontSize: size,
-        letterSpacing: size * 0.06,
-        color: CREAM,
-        lineHeight: 1,
+        background: BURGUNDY,
+        borderRadius: 20,
+        padding: '18px 34px',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.55)',
       }}
     >
-      LOMOND
+      <Img
+        src={staticFile('lomond-mark.png')}
+        style={{width: 220, display: 'block'}}
+      />
     </div>
   </div>
 );
-
-const Watermark: React.FC = () => {
-  const frame = useCurrentFrame();
-  const opacity = interpolate(frame, [10, 35], [0, 0.95], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: 110,
-        left: 0,
-        right: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        opacity,
-      }}
-    >
-      <LomondBadge size={38} />
-    </div>
-  );
-};
 
 const Vignette: React.FC = () => (
   <AbsoluteFill
@@ -117,7 +103,10 @@ const Vignette: React.FC = () => (
   />
 );
 
-const Caption: React.FC<{text: string}> = ({text}) => {
+const Caption: React.FC<{text: string; emojis?: string[]}> = ({
+  text,
+  emojis,
+}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const pop = spring({frame, fps, config: {damping: 14, mass: 0.7}});
@@ -142,18 +131,25 @@ const Caption: React.FC<{text: string}> = ({text}) => {
           fontWeight: 700,
           fontSize: 58,
           lineHeight: 1.5,
-          color: CREAM,
-          background: 'rgba(35,6,12,0.55)',
-          border: `2px solid rgba(237,227,213,0.25)`,
+          color: CREME,
+          background: 'rgba(77,14,19,0.72)',
+          border: `2px solid ${DUSTY_PINK}55`,
           borderRadius: 26,
-          padding: '8px 42px',
+          padding: '10px 42px',
           maxWidth: 940,
           textAlign: 'center',
           textShadow: '0 3px 22px rgba(0,0,0,0.85)',
           backdropFilter: 'blur(6px)',
+          display: 'flex',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
         }}
       >
-        {text}
+        <span>{text}</span>
+        {emojis?.map((code) => (
+          <Emoji key={code} code={code} size={56} />
+        ))}
       </div>
     </div>
   );
@@ -184,15 +180,19 @@ const HookTitle: React.FC = () => {
           fontFamily: 'Cairo, sans-serif',
           fontWeight: 700,
           fontSize: 84,
-          color: CREAM,
-          background: MAROON,
+          color: CREME,
+          background: BURGUNDY,
           borderRadius: 34,
-          padding: '6px 52px',
+          padding: '8px 52px',
           textAlign: 'center',
           boxShadow: '0 6px 40px rgba(0,0,0,0.7)',
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
-        ألماس… في الجيم؟! 😳💎
+        <span>ألماس… في الجيم؟!</span>
+        <Emoji code="1f633" size={80} />
+        <Emoji code="1f48e" size={80} />
       </div>
     </div>
   );
@@ -235,13 +235,15 @@ const ClipSegment: React.FC<{clip: Clip; isLast: boolean}> = ({
         />
       </AbsoluteFill>
       <Vignette />
-      {clip.caption ? <Caption text={clip.caption} /> : null}
+      {clip.caption ? (
+        <Caption text={clip.caption} emojis={clip.emojis} />
+      ) : null}
       <AbsoluteFill style={{backgroundColor: 'white', opacity: flash}} />
     </AbsoluteFill>
   );
 };
 
-// كرت ختامي بهوية لوموند
+// كرت ختامي بهوية لوموند: اللوقو الرسمي على خلفية عنابية
 const EndCard: React.FC = () => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -252,39 +254,38 @@ const EndCard: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: MAROON,
+        backgroundColor: BURGUNDY,
         opacity: fadeIn,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        gap: 30,
+        gap: 44,
       }}
     >
-      <div
+      <Img
+        src={staticFile('lomond-mark.png')}
         style={{
-          fontFamily: 'Shrikhand, serif',
-          fontSize: 150,
-          color: CREAM,
-          letterSpacing: 6,
+          width: 640,
           transform: `scale(${interpolate(pop, [0, 1], [0.7, 1])})`,
         }}
-      >
-        LOMOND
-      </div>
+      />
       <div
         dir="rtl"
         style={{
           fontFamily: 'Cairo, sans-serif',
           fontWeight: 700,
           fontSize: 44,
-          color: CREAM,
-          opacity: interpolate(frame, [12, 26], [0, 0.85], {
+          color: CREME,
+          display: 'flex',
+          alignItems: 'center',
+          opacity: interpolate(frame, [12, 26], [0, 0.9], {
             extrapolateLeft: 'clamp',
             extrapolateRight: 'clamp',
           }),
         }}
       >
-        ألماس يعيش يومك ✨
+        <span>ألماس يعيش يومك</span>
+        <Emoji code="2728" size={42} />
       </div>
     </AbsoluteFill>
   );
@@ -308,7 +309,8 @@ export const GymVlog: React.FC = () => {
       <Sequence from={0} durationInFrames={HOOK_FRAMES}>
         <HookTitle />
       </Sequence>
-      <Sequence from={HOOK_FRAMES} durationInFrames={CLIPS_FRAMES - HOOK_FRAMES}>
+      {/* اللوقو ظاهر من البداية حتى نهاية اللقطات */}
+      <Sequence from={0} durationInFrames={CLIPS_FRAMES}>
         <Watermark />
       </Sequence>
       <Sequence from={CLIPS_FRAMES} durationInFrames={ENDCARD_FRAMES}>

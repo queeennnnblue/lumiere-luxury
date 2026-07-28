@@ -10,10 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@napi-rs/canvas": "^1.0.3",
     "@remotion/cli": "^4.0.500",
     "@remotion/media-utils": "^4.0.500",
     "@remotion/renderer": "^4.0.500",
     "@types/react": "^19.2.17",
+    "emoji-datasource-apple": "^16.0.0",
+    "pdfjs-dist": "^6.1.200",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "remotion": "^4.0.500"
