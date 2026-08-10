@@ -211,7 +211,8 @@ def build_names(title_en: str, category: str | None, terms: set[str]) -> tuple[s
     اسم رسمي مختصر بالعربي والإنجليزي.
     الإنجليزي يُنظَّف من اسم المورّد، والعربي يُبنى من مفردات النمط.
     """
-    clean_en = scrub_supplier(title_en, terms)
+    # ممنوع em dash في نصوص المنتجات، والاسم منها
+    clean_en = strip_em_dash(scrub_supplier(title_en, terms))
     clean_en = re.sub(r"\s{2,}", " ", clean_en).strip(" -|،")
     words = re.findall(r"[A-Za-z]+", clean_en.lower())
 

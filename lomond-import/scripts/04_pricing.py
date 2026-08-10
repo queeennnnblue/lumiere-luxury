@@ -160,8 +160,14 @@ def main() -> int:
     for path in paths:
         product = json.loads(path.read_text(encoding="utf-8"))
         purchase_usd = product.get("purchase_usd")
-        if purchase_usd in (None, "", "MISSING"):
+        # الصفر ليس تكلفة، هو سعر محجوب عند المورّد. تسعيره يعني اختراع رقم.
+        if purchase_usd in (None, "", "MISSING") or float(purchase_usd or 0) <= 0:
             warn(f"بلا سعر شراء | no purchase_usd: {path.name}")
+            product.pop("pricing", None)
+            for field in ("cost", "price_ex_vat", "vat", "final_price", "net_profit"):
+                product.pop(field, None)
+            if not dry:
+                write_json(path, product)
             continue
 
         pricing = price_piece(float(purchase_usd), shipment_qty)

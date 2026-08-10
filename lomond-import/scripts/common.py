@@ -84,8 +84,11 @@ def write_json(path: Path, data) -> None:
 
 
 def load_stage(directory: Path) -> list[dict]:
-    """يقرأ كل ملفات JSON في مجلد مرحلة، مرتّبة باسم الملف."""
-    return [read_json(p) for p in sorted(directory.glob("*.json"))]
+    """
+    يقرأ ملفات JSON في مجلد مرحلة، مرتّبة باسم الملف.
+    الملفات التي تبدأ بشرطة سفلية داخلية (مثل _state.json) ليست منتجات وتُتجاهل.
+    """
+    return [read_json(p) for p in sorted(directory.glob("*.json")) if not p.name.startswith("_")]
 
 
 def log(msg: str) -> None:
