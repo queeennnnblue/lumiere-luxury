@@ -1,0 +1,9 @@
+# التبعيات | Dependencies
+# السحب والتسعير وبناء CSV تعمل بالمكتبة القياسية فقط.
+# Scraping, pricing and CSV building use the standard library only.
+
+# معالجة الصور (02_images.py)
+Pillow>=10.0
+
+# اختياري: صياغة المحتوى عبر Claude (03_content.py)
+# anthropic>=0.40

@@ -1,0 +1,41 @@
+# ---- أسرار | Secrets — never commit ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+
+# ---- مخرجات | Generated artefacts ----
+data/raw/*
+!data/raw/.gitkeep
+data/final/*
+!data/final/.gitkeep
+images/original/*
+!images/original/.gitkeep
+images/processed/*
+!images/processed/.gitkeep
+output/*
+!output/.gitkeep
+
+# ---- بايثون | Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+
+# ---- نظام التشغيل والمحرر | OS & editors ----
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# ---- ملفات مؤقتة | Scratch ----
+*.log
+*.tmp
+~$*.xlsx
+~$*.docx

@@ -1,0 +1,24 @@
+# روابط المنتجات والموردين | Product & supplier URLs
+#
+# سطر واحد لكل رابط. السطور التي تبدأ بـ # تُتجاهل.
+# One URL per line. Lines starting with # are ignored.
+#
+# يمكن وضع رابط قسم (collection) أو رابط منتج مفرد — 01_scrape.py يتعامل مع الاثنين.
+# You may list a collection URL or a single product URL; 01_scrape.py handles both.
+#
+# صيغة اختيارية لتثبيت التصنيف:  <url>  |  category=rings
+# Optional pinning of the category:  <url>  |  category=rings
+# التصنيفات: rings | earrings | necklaces | bracelets
+
+
+# ---- LGG Jewelry ----
+https://www.lggjewelry.com/
+
+# ---- Provence Gems ----
+https://provencegems.com/
+
+# ---- Fiorese Jewelry ----
+https://fioresejewelry.com/ar
+
+# ---- Stars Gem Jewelry ----
+https://www.starsgemjewelry.com/
