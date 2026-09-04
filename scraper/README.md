@@ -11,12 +11,28 @@ from three suppliers and produces two workbooks in `output/`:
   source. Split in two to stay under the upload limit at higher image quality.
   Deliberately contain **no links**.
 
-### Pricing
+### Pricing model
 
-`FINAL PRICE (SAR) = Price (USD) x 2.10 x 3.75` — cost + 110%, converted at the official
-Saudi riyal peg. Both the markup and the rate live in yellow cells on each file's Summary
-sheet (`B3` and `B4`); every final-price cell references them, so editing either updates
-the whole sheet.
+Every workbook carries a **Pricing** sheet whose yellow cells drive all price columns:
+
+| Cell | Control | Default |
+|---|---|---|
+| `B4` | Wholesale discount off the listed price | 0% |
+| `B5` | Shipping & insurance per piece (SAR) | 0 |
+| `B6` | Customs, duty & VAT | 0% |
+| `B7` | Payment / bank / platform fees | 0% |
+| `B8` | Profit margin (mark-up on landed cost) | 10% |
+| `B9` | USD to SAR rate | 3.75 |
+
+```
+Your Cost (USD)   = Listed Price x (1 - B4)
+Landed Cost (SAR) = Your Cost x B9 x (1 + B6 + B7) + B5
+FINAL PRICE (SAR) = Landed Cost x (1 + B8)
+Profit (SAR)      = Final Price - Landed Cost
+```
+
+**Important:** the scraped prices are the suppliers' **retail** prices, not wholesale.
+A 5-10% margin only works once `B4` carries a real negotiated wholesale rate.
 
 ## Sources
 
@@ -54,8 +70,8 @@ dedupe_xlsx.py  # collapse duplicate embedded images inside a saved .xlsx
   are excluded, including pieces where a lab diamond is only a side stone.
 - **Duplicates**: grouped by design + metal + carat; ring sizes, chain lengths and gold
   colours collapse into one row and the **cheapest** option is kept.
-- **Final price**: `Price x 2.10 x 3.75` (original + 110%, USD to SAR), written as a live
-  Excel formula pointing at editable markup and rate cells.
+- **Final price**: driven by the Pricing sheet (see above) as live Excel formulas, so the
+  whole catalogue reprices when a cost assumption changes.
 - **Image dedup**: openpyxl writes one copy of a picture per anchor, so `dedupe_xlsx.py`
   rewrites the drawing relationships to share a single copy of each distinct photo. This
   cut roughly 28% of the gallery files' size and paid for the higher image quality.

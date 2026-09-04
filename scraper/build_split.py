@@ -28,7 +28,7 @@ for label,fname,pred in PARTS:
     wb=Workbook(); ws=wb.active; ws.title='All Photos'
 
     INFO=[('#',6),('Product Name',40),('Description',50),('Weight',17),
-          ('Metal',19),('Price (USD)',13),('FINAL PRICE (SAR)',20),('Source',16),('Photos',8)]
+          ('Metal',19),('Listed Price (USD)',15),('FINAL PRICE (SAR)',19),('Source',16),('Photos',8)]
     NI=len(INFO); TOTAL=NI+MAXP
 
     ws.merge_cells(start_row=1,start_column=1,end_row=1,end_column=TOTAL)
@@ -36,8 +36,8 @@ for label,fname,pred in PARTS:
     t.font=Font(size=16,bold=True,color='FFFFFFFF'); t.fill=PatternFill('solid',fgColor=NAVY)
     t.alignment=Alignment(horizontal='center',vertical='center'); ws.row_dimensions[1].height=30
     ws.merge_cells(start_row=2,start_column=1,end_row=2,end_column=TOTAL)
-    s=ws.cell(2,1,'Every photo published for each piece · FINAL PRICE (SAR) = Price (USD) × 2.10 × 3.75 '
-                  '— markup and exchange rate are editable on the Summary sheet · no links in this file')
+    s=ws.cell(2,1,'Every photo published for each piece · Listed prices are the sites’ RETAIL prices · '
+                  'Set your wholesale discount, costs and profit % on the Pricing sheet · no links in this file')
     s.font=Font(size=10,italic=True,color=NAVY); s.fill=PatternFill('solid',fgColor=ACCENT)
     s.alignment=Alignment(horizontal='center',vertical='center'); ws.row_dimensions[2].height=18
 
@@ -67,7 +67,8 @@ for label,fname,pred in PARTS:
                 horizontal='center' if c in (1,4,5,8,9) else 'left')
             if r%2==0: cell.fill=PatternFill('solid',fgColor=ZEBRA)
         ws.cell(r,6).number_format='"$"#,##0.00'
-        f=ws.cell(r,7,f"=F{r}*Summary!$B$3*Summary!$B$4")
+        f=ws.cell(r,7,f"=(F{r}*(1-Pricing!$B$4)*Pricing!$B$9*(1+Pricing!$B$6+Pricing!$B$7)"
+                      f"+Pricing!$B$5)*(1+Pricing!$B$8)")
         f.number_format='#,##0.00" SAR"'; f.font=Font(bold=True,color='FF006100')
         f.fill=PatternFill('solid',fgColor=GREEN); f.border=border
         f.alignment=Alignment(horizontal='center',vertical='center')
@@ -84,6 +85,38 @@ for label,fname,pred in PARTS:
     ws.auto_filter.ref=f'A{HR}:{get_column_letter(NI)}{r-1}'
     ws.sheet_view.showGridLines=False
 
+    sp=wb.create_sheet('Pricing'); sp.sheet_view.showGridLines=False
+    sp.column_dimensions['A'].width=42; sp.column_dimensions['B'].width=16
+    sp.column_dimensions['C'].width=64
+    YEL=PatternFill('solid',fgColor='FFFFF2CC')
+    BOR=Border(*[Side(style='medium',color='FFBF8F00')]*4)
+    sp.merge_cells('A1:C1')
+    c=sp.cell(1,1,'PRICING MODEL — edit the yellow cells only')
+    c.font=Font(bold=True,size=14,color='FFFFFFFF'); c.fill=PatternFill('solid',fgColor=NAVY)
+    c.alignment=Alignment(horizontal='center',vertical='center'); sp.row_dimensions[1].height=26
+    def ctl(row,label,value,fmt,note):
+        a=sp.cell(row,1,label); a.font=Font(bold=True,size=10); a.alignment=Alignment(vertical='center')
+        b=sp.cell(row,2,value); b.number_format=fmt; b.fill=YEL; b.border=BOR
+        b.font=Font(bold=True,size=12,color='FF006100')
+        b.alignment=Alignment(horizontal='center',vertical='center')
+        n=sp.cell(row,3,note); n.font=Font(size=9,italic=True,color='FF595959')
+        n.alignment=Alignment(wrap_text=True,vertical='center'); sp.row_dimensions[row].height=30
+    sp.cell(3,1,'WHAT YOU PAY').font=Font(bold=True,size=11,color='FF1F3864')
+    ctl(4,'Wholesale discount off the listed price',0.0,'0%',
+        'THE MAIN LEVER. Listed prices are the sites\u2019 RETAIL prices. Enter the wholesale / OEM rate you '
+        'negotiate (40% = you pay 60% of the listed price). At 0% you are paying full retail.')
+    ctl(5,'Shipping & insurance per piece (SAR)',0,'#,##0" SAR"','Flat amount added to every piece.')
+    ctl(6,'Customs, duty & VAT',0.0,'0%','Percentage added on the landed value.')
+    ctl(7,'Payment / bank / platform fees',0.0,'0%','Card, transfer or marketplace fees.')
+    ctl(8,'Profit margin',0.10,'0%','Profit ON TOP OF landed cost. 10% here = 9.1% of the selling price.')
+    ctl(9,'USD \u2192 SAR exchange rate',3.75,'0.0000','Official Saudi riyal peg.')
+    sp.merge_cells('A11:C11')
+    w=sp.cell(11,1,'\u26a0  These are RETAIL prices from consumer websites, not wholesale. A 5\u201310% margin on top '
+                   'of full retail is not viable \u2014 the number that matters is the wholesale discount in B4. '
+                   'All three suppliers run B2B / OEM programmes (Provence Gems is itself the manufacturer).')
+    w.font=Font(size=10,color='FF9C0006'); w.fill=PatternFill('solid',fgColor='FFFFC7CE')
+    w.alignment=Alignment(wrap_text=True,vertical='center'); sp.row_dimensions[11].height=62
+
     s2=wb.create_sheet('Summary'); s2.sheet_view.showGridLines=False
     s2.column_dimensions['A'].width=36; s2.column_dimensions['B'].width=74
     s2.merge_cells('A1:B1')
@@ -91,13 +124,7 @@ for label,fname,pred in PARTS:
     c.font=Font(bold=True,size=13,color='FFFFFFFF'); c.fill=PatternFill('solid',fgColor=NAVY)
     c.alignment=Alignment(horizontal='center',vertical='center'); s2.row_dimensions[1].height=24
     # ---- editable pricing controls (referenced by every FINAL PRICE cell) ----
-    lab=s2.cell(3,1,'Markup multiplier  (price + 110%)'); lab.font=Font(bold=True,size=10)
-    v=s2.cell(3,2,MARKUP); v.number_format='0.00'; v.font=Font(bold=True,size=11,color='FF006100')
-    v.fill=PatternFill('solid',fgColor='FFFFF2CC')
-    lab=s2.cell(4,1,'USD → SAR exchange rate'); lab.font=Font(bold=True,size=10)
-    v=s2.cell(4,2,SAR); v.number_format='0.0000'; v.font=Font(bold=True,size=11,color='FF006100')
-    v.fill=PatternFill('solid',fgColor='FFFFF2CC')
-    s2.cell(5,1,'Edit either yellow cell and every FINAL PRICE (SAR) recalculates.').font=Font(italic=True,size=9)
+    s2.cell(3,1,'All pricing controls live on the Pricing sheet.').font=Font(italic=True,size=10)
     row=7
     def hdr(txt):
         global row
@@ -113,8 +140,7 @@ for label,fname,pred in PARTS:
     kv('Photos embedded',placed)
     kv('Photos per item','average %.1f · maximum %d'%(sum(len(i['gallery']) for i in rows)/len(rows),MAXP))
     kv('Price range (USD)','${:,.2f} – ${:,.2f}'.format(min(i['price'] for i in rows),max(i['price'] for i in rows)))
-    kv('Final price range (SAR)','{:,.0f} – {:,.0f} SAR'.format(min(i['price'] for i in rows)*MARKUP*SAR,
-                                                                max(i['price'] for i in rows)*MARKUP*SAR))
+    kv('Final price','Built on the Pricing sheet: listed price → wholesale discount → landed cost → profit %')
     kv('Links','Omitted by request — product and image links are in the main workbook.')
     row+=1
     hdr('SOURCES')
