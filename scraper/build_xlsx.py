@@ -7,6 +7,8 @@ from openpyxl.worksheet.hyperlink import Hyperlink
 
 items=json.load(open('items.json'))
 MARKUP=2.10   # price + 110%
+SAR=3.75      # USD -> SAR (official peg)
+SREF="'Summary & Method'"
 
 def key(u): return hashlib.md5(u.encode()).hexdigest()
 def short(t,n):
@@ -24,7 +26,7 @@ border=Border(left=thin,right=thin,top=thin,bottom=thin)
 
 COLS=[('#',6),('Photo',24),('Product Name',44),('Category',18),('Description',54),
       ('Metal',20),('Stone',17),('Weight (ct)',11),('Weight / Size (as stated)',22),
-      ('Stone Spec',30),('Price (USD)',14),(f'FINAL PRICE (+110%)',20),
+      ('Stone Spec',30),('Price (USD)',14),('FINAL PRICE (SAR)',21),
       ('Product Link',16),('Source',16),('Image URL',16),('Variants Merged',15)]
 
 # title row
@@ -33,7 +35,7 @@ t=ws.cell(1,1,'LAB DIAMOND JEWELRY — 18K GOLD & 925 STERLING SILVER')
 t.font=Font(size=16,bold=True,color='FFFFFFFF'); t.fill=PatternFill('solid',fgColor=NAVY)
 t.alignment=Alignment(horizontal='center',vertical='center'); ws.row_dimensions[1].height=30
 ws.merge_cells(start_row=2,start_column=1,end_row=2,end_column=len(COLS))
-s=ws.cell(2,2 if False else 1,'Cheapest option kept per design · Prices in USD · FINAL PRICE = Price × 2.10 (cost + 110%)')
+s=ws.cell(2,1,'Cheapest option kept per design · Supplier price in USD · FINAL PRICE (SAR) = Price × 2.10 × 3.75 — markup and exchange rate are editable on the Summary sheet')
 s.font=Font(size=10,italic=True,color=NAVY); s.fill=PatternFill('solid',fgColor=ACCENT)
 s.alignment=Alignment(horizontal='center',vertical='center'); ws.row_dimensions[2].height=18
 
@@ -64,8 +66,8 @@ for n,it in enumerate(items,1):
         if r%2==0: cell.fill=PatternFill('solid',fgColor=ZEBRA)
     # price + final price formula
     ws.cell(r,11).number_format='"$"#,##0.00'
-    f=ws.cell(r,12,f'=K{r}*{MARKUP}')
-    f.number_format='"$"#,##0.00'; f.font=Font(bold=True,color='FF006100')
+    f=ws.cell(r,12,f'=K{r}*{SREF}!$B$3*{SREF}!$B$4')
+    f.number_format='#,##0.00" SAR"'; f.font=Font(bold=True,color='FF006100')
     f.fill=PatternFill('solid',fgColor='FFE2EFDA'); f.border=border
     f.alignment=Alignment(horizontal='center',vertical='center')
     ws.cell(r,8).number_format='0.00'
@@ -108,11 +110,21 @@ by_kind=collections.Counter(i['kind'] for i in items)
 tot=sum(i['price'] for i in items)
 
 row=1
-hdr(row,'LAB DIAMOND JEWELRY — EXTRACTION SUMMARY'); row+=2
+hdr(row,'LAB DIAMOND JEWELRY — EXTRACTION SUMMARY')
+from openpyxl.styles import PatternFill as PF
+a=s2.cell(3,1,'Markup multiplier  (price + 110%)'); a.font=Font(bold=True,size=10)
+b=s2.cell(3,2,MARKUP); b.number_format='0.00'; b.font=Font(bold=True,size=11,color='FF006100')
+b.fill=PF('solid',fgColor='FFFFF2CC')
+a=s2.cell(4,1,'USD → SAR exchange rate'); a.font=Font(bold=True,size=10)
+b=s2.cell(4,2,SAR); b.number_format='0.0000'; b.font=Font(bold=True,size=11,color='FF006100')
+b.fill=PF('solid',fgColor='FFFFF2CC')
+s2.cell(5,1,'Edit either yellow cell and every FINAL PRICE (SAR) recalculates.').font=Font(italic=True,size=9)
+row=7
 kv(row,'Unique items listed',len(items)); row+=1
 kv(row,'Price range (USD)','${:,.2f} – ${:,.2f}'.format(min(i['price'] for i in items),max(i['price'] for i in items))); row+=1
 kv(row,'Average price','${:,.2f}'.format(tot/len(items))); row+=1
-kv(row,'Markup applied','FINAL PRICE = Price × 2.10  (original price + 110%)'); row+=2
+kv(row,'Final price','FINAL PRICE (SAR) = Price (USD) × 2.10 × 3.75  — cost + 110%, converted at the official Saudi riyal peg'); row+=1
+kv(row,'Final price range','{:,.0f} – {:,.0f} SAR'.format(min(i['price'] for i in items)*MARKUP*SAR,max(i['price'] for i in items)*MARKUP*SAR)); row+=2
 
 hdr(row,'SOURCES'); row+=1
 SRC={'Provence Gems':'https://provencegems.com/','LGG Jewelry':'https://www.lggjewelry.com/','Fiorese Jewelry':'https://fioresejewelry.com/'}
