@@ -1,7 +1,13 @@
 # Lab Diamond Jewelry Scraper
 
 Extracts lab-grown-diamond jewelry in **18K gold** or **925 sterling silver**
-from three suppliers and produces `output/Lab_Diamond_Jewelry_18K_925.xlsx`.
+from three suppliers and produces two workbooks in `output/`:
+
+- **`Lab_Diamond_Jewelry_18K_925.xlsx`** — main file: one photo per piece, full detail,
+  product and image **links**.
+- **`Lab_Diamond_Jewelry_ALL_PHOTOS.xlsx`** — gallery file: **every** photo published for
+  each piece (up to 20 per row) with description, weight, price, final price and source.
+  Deliberately contains **no links**.
 
 ## Sources
 
@@ -21,7 +27,9 @@ refine.py       # stone / metal filtering -> rows_kept.json
 dedupe.py       # group duplicates, keep cheapest -> items.json
 polish.py       # weight display + description cleanup
 getimg.py       # download & normalise product photos
-build_xlsx.py   # render the workbook
+build_xlsx.py   # render the main workbook
+getgal.py       # download every product photo (full galleries)
+build_gallery.py# render the all-photos workbook
 ```
 
 ## Rules applied
