@@ -67,7 +67,7 @@ for n,it in enumerate(items,1):
         c=NI+1+k
         cell=ws.cell(r,c); cell.border=border
         if r%2==0: cell.fill=PatternFill('solid',fgColor=ZEBRA)
-        p='gal/'+key(u)+'.jpg'
+        p='gal2/'+key(u)+'.jpg'
         if os.path.exists(p):
             im=XLImage(p); im.width=im.height=IMG
             im.anchor=f'{get_column_letter(c)}{r}'; ws.add_image(im); placed+=1
