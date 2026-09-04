@@ -13,26 +13,32 @@ from three suppliers and produces two workbooks in `output/`:
 
 ### Pricing model
 
-Every workbook carries a **Pricing** sheet whose yellow cells drive all price columns:
+Every workbook carries a **Pricing** sheet built from the client's own LOMOND cost
+statement. Yellow cells are the only inputs; all price columns are live formulas.
 
-| Cell | Control | Default |
+| Cell | Control | Value |
 |---|---|---|
-| `B4` | Wholesale discount off the listed price | 0% |
-| `B5` | Shipping & insurance per piece (SAR) | 0 |
-| `B6` | Customs, duty & VAT | 0% |
-| `B7` | Payment / bank / platform fees | 0% |
-| `B8` | Profit margin (mark-up on landed cost) | 10% |
-| `B9` | USD to SAR rate | 3.75 |
+| `B3` | USD to SAR | 3.75 |
+| `B4` | Wholesale discount off the listed price | 0.40 *(assumption)* |
+| `B6`-`B13` | Bank transfer, import shipping, customs, delivery, set-up share, packaging, monthly share, engraving | 548.84 total |
+| `B15` `B16` | Processing 8%, payment gateway 3.8% | |
+| `B17` | Net profit margin | 8% |
+| `B18` | VAT | 15% |
 
 ```
-Your Cost (USD)   = Listed Price x (1 - B4)
-Landed Cost (SAR) = Your Cost x B9 x (1 + B6 + B7) + B5
-FINAL PRICE (SAR) = Landed Cost x (1 + B8)
-Profit (SAR)      = Final Price - Landed Cost
+Buy Price (USD)   = Listed Price x (1 - B4)
+Total Cost (SAR)  = Buy Price x B3 + overhead
+Price before VAT  = Total Cost / (1 - B15 - B16 - B17)
+FINAL PRICE (SAR) = Price before VAT x (1 + B18)
+Net Profit (SAR)  = Price before VAT x B17
+Discount needed   = the wholesale rate at which the final price equals supplier retail
 ```
 
-**Important:** the scraped prices are the suppliers' **retail** prices, not wholesale.
-A 5-10% margin only works once `B4` carries a real negotiated wholesale rate.
+This reproduces the client's own worked example to the fourth decimal.
+
+**Important:** the scraped prices are the suppliers' **retail** prices. At full retail the
+final price lands ~1.5x the supplier's own website price, so a viable margin depends
+entirely on `B4` carrying a real negotiated wholesale rate.
 
 ## Sources
 
